@@ -18,8 +18,9 @@ with st.expander('自动搜索采集', expanded=True):
         platforms=st.multiselect('采集平台',list(PLATFORMS),default=['BOSS直聘','猎聘'])
         st.caption('默认广州。其它城市可先选择单个平台并填写该平台城市代码。')
         code=st.text_input('城市代码（留空为广州）')
-        limit=st.number_input('每平台最多岗位数',min_value=1,max_value=1000,value=100)
-        rounds=st.number_input('每平台最多加载轮数',min_value=1,max_value=300,value=30)
+        limit=st.number_input('每平台最多岗位数',min_value=1,max_value=20,value=10)
+        rounds=st.number_input('每平台最多加载轮数',min_value=1,max_value=10,value=5)
+        st.caption('保护模式：先检查 robots 规则；禁止或待核路径不自动访问。单平台最多5分钟、每天40次自动页面动作，动作间隔至少10秒。以上为本工具自设上限，不是平台许可或安全保证。验证码需人工处理，重复验证/HTTP拒绝将触发冷却，重启任务不会清除。')
         details=st.checkbox('自动访问岗位详情获取完整JD（耗时更长）',value=True)
         launch=st.form_submit_button('开始自动采集')
     if launch:

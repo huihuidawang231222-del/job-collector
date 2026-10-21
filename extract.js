@@ -3,7 +3,7 @@
   {host:'zhipin.com',name:'BOSS直聘',card:'.job-card-wrapper', title:'.job-name',company:'.company-name',salary:'.salary',location:'.job-area'},
   {host:'zhaopin.com',name:'智联招聘',card:'.joblist-box__item',title:'.jobinfo__name',company:'.companyinfo__name',salary:'.jobinfo__salary',location:'.jobinfo__other-info-item'},
   {host:'liepin.com',name:'猎聘',card:'.job-card-pc-container',title:'.job-title',company:'.company-name',salary:'.job-salary',location:'.job-dq'},
-  {host:'51job.com',name:'前程无忧',card:'.joblist-item',title:'.jname',company:'.cname',salary:'.sal',location:'.d'}
+  {host:'51job.com',name:'前程无忧',card:'.joblist-item',title:'.jname',company:'.cname',salary:'.sal',location:'.area'}
  ];
  const cfg=configs.find(c=>location.hostname===c.host || location.hostname.endsWith('.'+c.host));
  const rows=[];
@@ -14,8 +14,8 @@
  }
  if(cfg) for(const n of document.querySelectorAll(cfg.card)){
   if(!n.getClientRects().length) continue;
-  const a=n.querySelector('a[href*="job"],a[href*="position"],a[href]');
-  rows.push({title:txt(n,cfg.title),company:txt(n,cfg.company),salary:txt(n,cfg.salary),location:txt(n,cfg.location),source:cfg.name,url:a?.href||'',raw:n.innerText});
+  const a=cfg.host==='51job.com' ? n.querySelector('a[href*="jobs.51job.com/"]:not(.comp)') : n.querySelector('a[href*="job"],a[href*="position"],a[href]');
+  rows.push({title:txt(n,cfg.title),company:txt(n,cfg.company),salary:txt(n,cfg.salary),location:txt(n,cfg.location),source:cfg.name,url:a?.href||'',company_url:cfg.host==='51job.com' ? n.querySelector('a.comp')?.href||'' : '',source_page:location.href,raw:n.innerText});
  }
  // 标准 JobPosting 数据只作为详情页补充，不猜测其它网页文本。
  function walk(o){

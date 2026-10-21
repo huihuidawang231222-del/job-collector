@@ -3,7 +3,11 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 from core import ROOT, save
 from browser_runtime import browser_config
+from collection_safety import CollectionGuard, single_collector
+from auto_collect import PLATFORMS, allowed, blocked
+from urllib.parse import urlsplit
 
+@single_collector(ROOT/'data')
 def main():
     with sync_playwright() as p:
         name,options,profile=browser_config(p.chromium)
@@ -24,8 +28,11 @@ def main():
                 if index<0 or index>=len(pages): raise ValueError('标签页编号超出范围')
                 page=pages[index]
                 body=page.locator('body').inner_text()
-                if any(x in body for x in ['请完成安全验证','拖动滑块完成验证','访问过于频繁']):
+                if blocked(page):
                     print('页面处于验证或访问限制状态，请手动处理后再采集。'); continue
+                host=next((cfg['host'] for cfg in PLATFORMS.values() if allowed(page.url,cfg['host'])),urlsplit(page.url).hostname)
+                guard=CollectionGuard(host,ROOT/'data')
+                guard.before('manual_capture',page.url)
                 result=page.evaluate(script)
                 if not result['rows']:
                     print('未识别到岗位。可能尚未加载、页面需登录，或适配规则需要更新。可改用CSV导入。'); continue

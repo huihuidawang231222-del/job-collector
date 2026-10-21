@@ -13,6 +13,7 @@
 macOS / Linux：使用终端运行 `python3 -m venv .venv`，激活环境后 `pip install -r requirements.txt`、`python -m playwright install chromium`；分别运行 `streamlit run app.py --server.address 127.0.0.1 --browser.gatherUsageStats false` 和 `python collector.py`。Linux 有桌面环境才能打开采集浏览器。
 
 ## 支持边界
+- 已加入[平台访问保护](docs/COLLECTION_SAFETY.md)。最新保护模式会拦截robots禁止的搜索路径，规则无法核实时暂停自动采集；当前BOSS搜索路径受限，其余平台规则待核。下文已有的“框架已实现”及历史测试记录不代表现在自动采集获准开放。人工浏览、补录和CSV/JSON导入仍可使用。
 - 2026-10-22 本机真实测试：智联新版分栏列表可保存公开岗位名称、公司、地点和详情链接（3条）；未登录时薪资隐藏、JD需登录，不读取被裁剪的全文。BOSS、猎聘、前程无忧本次连接失败，尚未验证采集可用。
 - 内置 BOSS直聘、智联、猎聘、前程无忧的 CSS 规则草案，以及标准 JobPosting JSON-LD 详情页解析。**规则尚未完成真实平台登录联调，页面改版时可能采集不到或字段不完整。** 未识别时明确报错，不伪造数据。只针对网页版，不读取手机 App。
 - 自动搜索与连续加载已实现，仍需正常访问和必要的登录。验证码、访问限制由你处理。不会绕过验证、调用隐藏接口或获取非公开数据。
@@ -54,6 +55,6 @@ Windows 安装后运行 `.venv\Scripts\python -m unittest discover -v`，检查�
 
 当前区名词表以广州为主；其它城市可保留工作地点原文。默认工资筛选仅比较可识别月薪。自动采集默认广州；其它城市可选单个平台并传入该平台城市代码，多城市选择器待补充。已有任务锁时不要重复启动。若进程意外退出，确认采集进程已关闭后删除 `data/worker.lock` 再启动。
 
-自动采集命令示例：`python auto_collect.py --keyword 数据分析 --platforms BOSS直聘 猎聘 --limit 100 --rounds 30`。
+自动采集命令示例：`python auto_collect.py --keyword 数据分析 --platforms BOSS直聘 猎聘 --limit 10 --rounds 5`。规则门禁会先判断路径；禁止或待核时只报告保护原因，不请求岗位页。不能通过提高间隔推断平台许可。
 
 采集和管理界面可同时运行，但不要同时运行两个采集浏览器进程。完整数据库与浏览器档案不会纳入Git版本控制。

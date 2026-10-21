@@ -42,6 +42,30 @@ class ClassificationTests(unittest.TestCase):
         self.assertEqual(r['jd_status'],'未获取详情')
 
 class AutomaticCollectionTests(unittest.TestCase):
+    def test_saved_list_row_is_counted_when_detail_verification_stops(self):
+        from unittest.mock import MagicMock,patch
+        import auto_collect as ac
+        page=MagicMock();page.evaluate.return_value={'rows':[dict(title='合成岗位',url='https://example.com/1')]}
+        output=[]
+        with patch.object(ac,'stopped',return_value=False),patch.object(ac,'blocked',side_effect=[False,True]),patch.object(ac,'pause',return_value=False),patch.object(ac,'status'):
+            count,reason=ac.collect(page,{'host':'example.com'},'测试',1,1,True,emit=lambda rows:output.extend(rows))
+        self.assertEqual(count,1)
+        self.assertEqual(reason,'用户停止')
+        self.assertEqual(output[0]['jd_access'],'需人工登录或安全验证')
+
+    def test_new_platform_login_and_verification_signals(self):
+        from unittest.mock import MagicMock
+        from auto_collect import blocked
+        for url,title,body in [
+            ('https://www.zhipin.com/web/user/','登录',''),
+            ('https://safe.liepin.com/page/liepin/captchaPage_ip_PC','安全中心',''),
+            ('https://jobs.51job.com/job.html','滑动验证页面',''),
+            ('https://www.zhaopin.com/','Security Verification',''),
+        ]:
+            page=MagicMock();page.url=url;page.title.return_value=title
+            page.locator.return_value.inner_text.return_value=body
+            self.assertTrue(blocked(page))
+
     def test_inline_login_gate_does_not_read_clipped_jd(self):
         from unittest.mock import MagicMock
         import auto_collect as ac
