@@ -1,5 +1,6 @@
 """Keyword search, bounded automatic scrolling/pagination and detail capture."""
 import argparse,json,time,os
+from browser_runtime import browser_config
 from urllib.parse import urlencode,urlsplit
 from core import ROOT,save
 DATA=ROOT/'data'
@@ -94,7 +95,9 @@ def run(args):
         status(state='running',message='启动浏览器',results=[],pid=os.getpid())
         reports=[]
         with sync_playwright() as p:
-            ctx=p.chromium.launch_persistent_context(str(DATA/'browser'),headless=False)
+            browser_name,options,profile=browser_config(p.chromium)
+            status(browser=browser_name,message='启动采集浏览器：'+browser_name)
+            ctx=p.chromium.launch_persistent_context(str(DATA/profile),headless=False,**options)
             try:
                 for name in args.platforms:
                     if stopped():break

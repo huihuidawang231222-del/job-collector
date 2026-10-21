@@ -11,6 +11,22 @@ import analysis_api as api
 
 
 class AnalysisTests(unittest.TestCase):
+    def test_resume_is_opt_in_and_input_versions_stay_distinct(self):
+        result = dict(choices=[dict(message=dict(content='合成分析'), finish_reason='stop')])
+        resume = dict(filename='synthetic.pdf', text='原始提取文字', reviewed_text='核对后的简历文字')
+        for selected_resume in [None, resume]:
+            with patch.object(api, 'build_opener') as opener:
+                opener.return_value.open.return_value = io.BytesIO(json.dumps(result).encode())
+                record = api.analyze({'title': '测试岗位'}, 'test-only-key', resume=selected_resume)
+                payload = json.loads(opener.return_value.open.call_args.args[0].data)
+                user = json.loads(payload['messages'][1]['content'])
+                self.assertEqual('简历文字（用户核对后）' in user, selected_resume is not None)
+                if selected_resume:
+                    self.assertEqual(user['简历文字（用户核对后）'], resume['reviewed_text'])
+                    self.assertEqual(record['resume_snapshot']['text'], '原始提取文字')
+                else:
+                    self.assertIsNone(record['resume_snapshot'])
+
     def test_request_and_append_history_preserve_original(self):
         row = dict(title='分析师', url='https://example.com/1', jd='SQL，本科')
         result = dict(choices=[dict(message=dict(content='测试分析'), finish_reason='stop')],

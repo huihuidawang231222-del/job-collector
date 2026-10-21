@@ -15,6 +15,9 @@ class AppTests(unittest.TestCase):
                 core.DB = Path(directory) / 'jobs.sqlite3'
                 app = AppTest.from_file(str(Path(__file__).with_name('app.py'))).run(timeout=30)
                 self.assertEqual(len(app.exception), 0)
+                self.assertTrue(any(x.label == '选择 PDF 简历' for x in app.get('file_uploader')))
+                self.assertTrue(next(x for x in app.button if x.label == '解析简历').disabled)
+                self.assertTrue(next(x for x in app.checkbox if x.label == '使用上方核对后的简历做匹配分析').disabled)
                 self.assertTrue(any(x.label == 'API Key（仅在本次本地会话使用，不写入文件）' for x in app.text_input))
                 self.assertTrue(next(x for x in app.button if x.label == '分析此岗位').disabled)
                 core.save([dict(title='合成测试分析师', company='测试公司', location='广州',
@@ -24,7 +27,7 @@ class AppTests(unittest.TestCase):
                 self.assertTrue(any(x.label == '分析此岗位' for x in app.button))
                 next(x for x in app.button if x.label == '分析此岗位').click().run(timeout=30)
                 self.assertTrue(any('请先确认发送范围' in x.value for x in app.error))
-                next(x for x in app.checkbox if x.label == '同意将选中岗位及偏好发送给以上 API 服务').check()
+                next(x for x in app.checkbox if x.label == '同意将选中岗位、偏好及勾选的简历文字发送给以上 API 服务').check()
                 next(x for x in app.button if x.label == '分析此岗位').click().run(timeout=30)
                 self.assertTrue(any('有效 API Key' in x.value for x in app.error))
                 self.assertEqual(core.load()[0]['jd'], '本科 SQL')

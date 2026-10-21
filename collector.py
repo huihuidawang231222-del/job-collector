@@ -2,10 +2,13 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 from core import ROOT, save
+from browser_runtime import browser_config
 
 def main():
     with sync_playwright() as p:
-        context=p.chromium.launch_persistent_context(str(ROOT/'data'/'browser'),headless=False)
+        name,options,profile=browser_config(p.chromium)
+        print('采集浏览器：',name)
+        context=p.chromium.launch_persistent_context(str(ROOT/'data'/profile),headless=False,**options)
         page=context.pages[0] if context.pages else context.new_page()
         page.goto('https://www.zhipin.com/',wait_until='domcontentloaded',timeout=60000)
         script=(ROOT/'extract.js').read_text(encoding='utf-8')

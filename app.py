@@ -1,4 +1,4 @@
-import io, json, subprocess, sys, zipfile
+import io, json, subprocess, sys, zipfile, hashlib
 from pathlib import Path
 from classify import export_rows, enrich, EXPORT_COLUMNS
 from auto_collect import DATA, STATUS, STOP, RESUME, PLATFORMS
@@ -7,6 +7,7 @@ import streamlit as st
 from core import save,load
 from transfer import read_import, csv_cell
 from analysis_api import analyze, save_analysis, load_analyses, DEFAULT_BASE_URL, DEFAULT_MODEL
+from resume_pdf import parse_resume
 st.set_page_config(page_title='岗位收集箱',page_icon='💼',layout='wide')
 st.title('💼 岗位收集箱')
 st.caption('本地独立版 · 浏览器辅助采集 · 筛选与导出')
@@ -104,25 +105,59 @@ if rows:
 
 else: st.info('还没有岗位，请先自动采集、导入或手动补录。')
 
+resume_for_analysis=None
+with st.expander('上传 PDF 简历并解析', expanded=True):
+    st.caption('本地解析，不调用模型；支持文字型PDF（10MB以内、最多20页、提取文字最多12000字符），扫描版暂不做OCR。原文件不写入磁盘。请核对多栏简历的阅读顺序及是否漏字。')
+    resume_file=st.file_uploader('选择 PDF 简历',type=['pdf'],key='resume_upload')
+    resume_digest=hashlib.sha256(resume_file.getvalue()).hexdigest() if resume_file else None
+    parsed=st.session_state.get('parsed_resume')
+    if parsed and (parsed['sha256']!=resume_digest or parsed['filename']!=resume_file.name):
+        st.session_state.pop('parsed_resume',None);parsed=None
+    if st.button('解析简历',disabled=resume_file is None):
+        st.session_state.pop('parsed_resume',None);parsed=None
+        try:
+            with st.spinner('本地提取简历文字'):
+                parsed=parse_resume(resume_file.getvalue(),resume_file.name)
+            st.session_state['parsed_resume']=parsed
+            st.session_state['resume_review_'+parsed['sha256']]=parsed['text']
+        except ValueError as e:st.error(str(e))
+    if parsed:
+        st.caption(f"{parsed['filename']} · {parsed['page_count']}页 · {parsed['status']}")
+        for warning in parsed['warnings']:st.warning(warning)
+        with st.expander('逐页提取原文（只读）'):
+            for page in parsed['pages']:
+                st.caption(f"第{page['page']}页")
+                st.text(page['text'] or '未提取到文字')
+        reviewed=st.text_area('核对并修正简历文字（仅此版本可选用于分析）',key='resume_review_'+parsed['sha256'],max_chars=12000,height=260)
+        if reviewed.strip():
+            resume_for_analysis={**parsed,'reviewed_text':reviewed}
+            st.download_button('下载核对后的简历文字',reviewed.encode('utf-8'),'resume-text.txt','text/plain')
+        st.caption('默认不发送简历。下方勾选用于分析并确认发送后，简历原始提取文字与核对版会随分析记录保存在本地数据库及分析JSON中。')
+        if st.button('清除本次简历解析'):
+            st.session_state.pop('parsed_resume',None)
+            st.rerun()
+
 with st.expander('AI 岗位分析（第三方 API）', expanded=True):
-    st.caption('默认智谱 glm-4.7-flash。每次只发送选中的一条岗位及求职偏好，不发送数据库或浏览器登录信息。分析单独保存，不修改岗位原文。')
+    st.caption('默认智谱 glm-4.7-flash。每次只发送选中的一条岗位、求职偏好及你选择使用的简历文字，不发送数据库或浏览器登录信息。分析单独保存，不修改岗位原文。')
     if selected_rows:
         index=st.selectbox('选择岗位',range(len(selected_rows)),format_func=lambda i:f"{i+1}. {selected_rows[i]['title']} · {selected_rows[i].get('company','')} · {selected_rows[i].get('location','')}")
         selected=selected_rows[index]
     else:st.info('还没有可分析的岗位。请先在上方采集、导入或手动补录岗位；若已有岗位，请调整筛选条件。')
+    if resume_for_analysis is None:st.session_state['use_resume']=False
     with st.form('analysis'):
         base_url=st.text_input('API Base URL',value=DEFAULT_BASE_URL)
         model=st.text_input('模型名称',value=DEFAULT_MODEL)
         api_key=st.text_input('API Key（仅在本次本地会话使用，不写入文件）',type='password')
         preferences=st.text_area('求职偏好（可选，不填则仅分析岗位）',max_chars=4000)
-        consent=st.checkbox('同意将选中岗位及偏好发送给以上 API 服务')
+        use_resume=st.checkbox('使用上方核对后的简历做匹配分析',key='use_resume',disabled=resume_for_analysis is None)
+        consent=st.checkbox('同意将选中岗位、偏好及勾选的简历文字发送给以上 API 服务')
         submitted=st.form_submit_button('分析此岗位',disabled=not selected_rows)
     if submitted:
         if not consent:st.error('请先确认发送范围')
         else:
             try:
                 with st.spinner('分析中，最多等待约60秒；失败不会自动重试'):
-                    record=analyze(selected,api_key,base_url,model,preferences)
+                    record=analyze(selected,api_key,base_url,model,preferences,resume=resume_for_analysis if use_resume else None)
                     save_analysis(record)
                 st.success('分析已单独保存，原始岗位未改动')
             except ValueError as e:st.error(str(e))
