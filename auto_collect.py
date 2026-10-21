@@ -38,6 +38,20 @@ def next_page(page):
                 node.click(timeout=10000);page.wait_for_timeout(2500);return True
     return False
 
+def capture_inline(page,row,with_details):
+    """Read the selected public sidebar; never read login-clipped JD text."""
+    page.locator('.job-list-panel .job-card').nth(int(row['list_index'])).click(timeout=10000)
+    page.wait_for_function('(title) => document.querySelector(".job-detail-summary__title-text")?.innerText.trim() === title',arg=row['title'],timeout=10000)
+    panel=page.locator('.job-detail-panel')
+    link=panel.locator('a[href*="/jobdetail/"]').first
+    if link.count():row['url']=link.get_attribute('href') or ''
+    if not with_details:return
+    if any(node.is_visible() for node in panel.locator('.job-description__content--guest-clamp, .job-detail-login-gate').all()):
+        row['jd_access']='需登录查看完整JD'
+        return
+    node=panel.locator('.job-description__content').first
+    if node.count() and node.is_visible():row['jd']=node.inner_text()
+
 def collect(page,cfg,keyword,limit,rounds,with_details,emit=save):
     script=(ROOT/'extract.js').read_text(encoding='utf-8'); seen=set();stale=0
     count=0;details=page.context.new_page() if with_details else None
@@ -57,7 +71,10 @@ def collect(page,cfg,keyword,limit,rounds,with_details,emit=save):
             for r in fresh[:max(0,limit-count)]:
                 if stopped():return count,'用户停止'
                 r['search_keyword']=keyword
-                if details and allowed(r.get('url',''),cfg['host']):
+                if r.get('capture_layout')=='zhaopin-split':
+                    try:capture_inline(page,r,with_details)
+                    except Exception as e:r['detail_error']=str(e)[:300]
+                elif details and allowed(r.get('url',''),cfg['host']):
                     try:
                         details.goto(r['url'],wait_until='domcontentloaded',timeout=30000)
                         details.wait_for_timeout(2000)

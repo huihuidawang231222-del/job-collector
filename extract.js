@@ -8,6 +8,10 @@
  const cfg=configs.find(c=>location.hostname===c.host || location.hostname.endsWith('.'+c.host));
  const rows=[];
  const txt=(n,s)=>n.querySelector(s)?.innerText?.trim() || '';
+ if(cfg?.host==='zhaopin.com') for(const [index,n] of Array.from(document.querySelectorAll('.job-list-panel .job-card')).entries()){
+  if(!n.getClientRects().length || n.closest('.job-list-login-gate')) continue;
+  rows.push({title:txt(n,'.job-card__title-main .vue-clamp__text')||txt(n,'.job-card__title-main'),company:txt(n,'.job-card__company-name'),salary:txt(n,'.job-card__salary'),location:txt(n,'.job-card__location'),source:cfg.name,url:'',source_page:location.href,raw:n.innerText,list_index:index,capture_layout:'zhaopin-split'});
+ }
  if(cfg) for(const n of document.querySelectorAll(cfg.card)){
   if(!n.getClientRects().length) continue;
   const a=n.querySelector('a[href*="job"],a[href*="position"],a[href]');

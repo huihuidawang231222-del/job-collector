@@ -9,7 +9,7 @@ def enrich(row):
     r['city']=next((x for x in CITIES if x in loc),'未说明')
     r['district']=next((x for x in DISTRICTS if x in loc),'未说明')
     text=' '.join([jd,raw,str(r.get('benefits',''))])
-    r['jd']=jd; r['jd_status']='已采集' if jd.strip() else '未获取详情'
+    r['jd']=jd; r['jd_status']='已采集' if jd.strip() else r.get('jd_access') or '未获取详情'
     r['education']=next((x for x in ['博士','硕士','本科','大专','高中','中专','学历不限'] if x in text),'未说明')
     exp=re.search(r'\d+\s*[-至]\s*\d+\s*年|\d+\s*年以上|经验不限|应届(?:毕业生)?|无需经验',text)
     r['experience']=exp[0] if exp else '未说明'
@@ -26,6 +26,7 @@ def enrich(row):
     return r
 EXPORT_COLUMNS={'title':'岗位名称','company':'公司','city':'城市','district':'区','location':'工作地点原文','salary':'待遇原文','salary_min':'月薪下限_元','salary_max':'月薪上限_元','salary_months':'薪数','benefit_tags':'福利标签','weekends':'休息安排','jd':'岗位JD','jd_status':'JD采集状态','education':'学历','experience':'经验','skills':'技能关键词','industry':'行业分类','industry_raw':'行业原文','industry_basis':'行业分类依据','source':'招聘平台','url':'岗位链接','first_seen':'首次采集时间','last_seen':'最近采集时间','raw':'列表原文'}
 EXPORT_COLUMNS.update({'benefits':'福利原文','search_keyword':'搜索关键词','detail_error':'详情采集错误'})
+EXPORT_COLUMNS.update({'source_page':'采集页面','jd_access':'详情访问状态'})
 
 def export_rows(rows):
     return [{label:enrich(r).get(key,'') for key,label in EXPORT_COLUMNS.items()} for r in rows]

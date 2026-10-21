@@ -42,6 +42,25 @@ class ClassificationTests(unittest.TestCase):
         self.assertEqual(r['jd_status'],'未获取详情')
 
 class AutomaticCollectionTests(unittest.TestCase):
+    def test_inline_login_gate_does_not_read_clipped_jd(self):
+        from unittest.mock import MagicMock
+        import auto_collect as ac
+        page=MagicMock();panel=page.locator.return_value
+        link=MagicMock();link.count.return_value=1;link.get_attribute.return_value='https://www.zhaopin.com/jobdetail/example.htm'
+        gate=MagicMock();gate.is_visible.return_value=True
+        gates=MagicMock();gates.all.return_value=[gate]
+        def locate(selector):
+            if selector.startswith('a[href'):
+                found=MagicMock();found.first=link;return found
+            if 'guest-clamp' in selector:return gates
+            self.fail('Login-clipped JD must not be read')
+        panel.locator.side_effect=locate
+        row=dict(title='测试岗位',list_index=0)
+        ac.capture_inline(page,row,True)
+        self.assertEqual(row['jd_access'],'需登录查看完整JD')
+        self.assertNotIn('jd',row)
+        self.assertEqual(row['url'],'https://www.zhaopin.com/jobdetail/example.htm')
+
     def test_limit_and_automatic_scroll(self):
         from unittest.mock import patch,MagicMock
         import auto_collect as ac

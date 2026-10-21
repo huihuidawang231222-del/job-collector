@@ -13,6 +13,7 @@
 macOS / Linux：使用终端运行 `python3 -m venv .venv`，激活环境后 `pip install -r requirements.txt`、`python -m playwright install chromium`；分别运行 `streamlit run app.py --server.address 127.0.0.1 --browser.gatherUsageStats false` 和 `python collector.py`。Linux 有桌面环境才能打开采集浏览器。
 
 ## 支持边界
+- 2026-10-22 本机真实测试：智联新版分栏列表可保存公开岗位名称、公司、地点和详情链接（3条）；未登录时薪资隐藏、JD需登录，不读取被裁剪的全文。BOSS、猎聘、前程无忧本次连接失败，尚未验证采集可用。
 - 内置 BOSS直聘、智联、猎聘、前程无忧的 CSS 规则草案，以及标准 JobPosting JSON-LD 详情页解析。**规则尚未完成真实平台登录联调，页面改版时可能采集不到或字段不完整。** 未识别时明确报错，不伪造数据。只针对网页版，不读取手机 App。
 - 自动搜索与连续加载已实现，仍需正常访问和必要的登录。验证码、访问限制由你处理。不会绕过验证、调用隐藏接口或获取非公开数据。
 - 仅采集浏览器可以正常加载的岗位，达到数量/轮数上限或不再有新数据时结束；原始卡片文字一起保留，方便核对。公司和地点等字段缺失时可导出修正再导入。
