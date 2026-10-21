@@ -60,6 +60,7 @@ with st.expander('导入 CSV / JSON 与手动补录'):
 st.button('刷新数据')
 rows=[enrich(r) for r in load()]
 st.metric('本地岗位总数',len(rows))
+selected_rows=[]
 if rows:
     df=pd.DataFrame(rows).fillna('')
     for k in ['company','location','source','salary','url','raw','weekends','salary_min','salary_max']:
@@ -82,37 +83,8 @@ if rows:
     if weekends: df=df[df.weekends=='双休']
     st.write(f'筛选结果：{len(df)} 条。薪资未能识别的岗位，在薪资筛选时不计入。')
     st.dataframe(df,hide_index=True,column_config={'url':st.column_config.LinkColumn('岗位链接')})
-    with st.expander('AI 岗位分析（第三方 API）'):
-        st.caption('默认智谱 glm-4.7-flash。每次只发送选中的一条岗位及求职偏好，不发送数据库或浏览器登录信息。分析单独保存，不修改岗位原文。')
-        selected_rows=df.to_dict('records')
-        if selected_rows:
-            index=st.selectbox('选择岗位',range(len(selected_rows)),format_func=lambda i:f"{i+1}. {selected_rows[i]['title']} · {selected_rows[i].get('company','')} · {selected_rows[i].get('location','')}")
-            selected=selected_rows[index]
-            with st.form('analysis'):
-                base_url=st.text_input('API Base URL',value=DEFAULT_BASE_URL)
-                model=st.text_input('模型名称',value=DEFAULT_MODEL)
-                api_key=st.text_input('API Key（仅在本次本地会话使用，不写入文件）',type='password')
-                preferences=st.text_area('求职偏好（可选，不填则仅分析岗位）',max_chars=4000)
-                consent=st.checkbox('同意将选中岗位及偏好发送给以上 API 服务')
-                submitted=st.form_submit_button('分析此岗位')
-            if submitted:
-                if not consent:st.error('请先确认发送范围')
-                else:
-                    try:
-                        with st.spinner('分析中，最多等待约60秒；失败不会自动重试'):
-                            record=analyze(selected,api_key,base_url,model,preferences)
-                            save_analysis(record)
-                        st.success('分析已单独保存，原始岗位未改动')
-                    except ValueError as e:st.error(str(e))
-                    except Exception:st.error('分析或保存失败，请检查本地数据库与服务配置')
-            history=load_analyses(selected)
-            for record in history:
-                st.caption(f"{record['created_at']} · {record['model']} · {record['verification']}")
-                st.text(record['content'])
-            if history:
-                st.download_button('导出该岗位最近20次分析（含原文快照）',json.dumps(history,ensure_ascii=False,indent=2).encode('utf-8'),'job-analyses.json','application/json')
-        else:st.info('当前筛选无岗位，请调整筛选条件。')
-    df=pd.DataFrame(export_rows(df.to_dict('records')),columns=list(EXPORT_COLUMNS.values()))
+    selected_rows=df.to_dict('records')
+    df=pd.DataFrame(export_rows(selected_rows),columns=list(EXPORT_COLUMNS.values()))
     # Neutralize formula injection when a CSV is opened by spreadsheet software.
     safe=df.map(csv_cell)
     st.download_button('导出 CSV（Excel 可打开）',safe.to_csv(index=False).encode('utf-8-sig'),'jobs.csv','text/csv')
@@ -131,3 +103,34 @@ if rows:
     st.download_button('按地点、行业、休息安排分类导出ZIP',bundle.getvalue(),'jobs-classified.zip','application/zip')
 
 else: st.info('还没有岗位，请先自动采集、导入或手动补录。')
+
+with st.expander('AI 岗位分析（第三方 API）', expanded=True):
+    st.caption('默认智谱 glm-4.7-flash。每次只发送选中的一条岗位及求职偏好，不发送数据库或浏览器登录信息。分析单独保存，不修改岗位原文。')
+    if selected_rows:
+        index=st.selectbox('选择岗位',range(len(selected_rows)),format_func=lambda i:f"{i+1}. {selected_rows[i]['title']} · {selected_rows[i].get('company','')} · {selected_rows[i].get('location','')}")
+        selected=selected_rows[index]
+    else:st.info('还没有可分析的岗位。请先在上方采集、导入或手动补录岗位；若已有岗位，请调整筛选条件。')
+    with st.form('analysis'):
+        base_url=st.text_input('API Base URL',value=DEFAULT_BASE_URL)
+        model=st.text_input('模型名称',value=DEFAULT_MODEL)
+        api_key=st.text_input('API Key（仅在本次本地会话使用，不写入文件）',type='password')
+        preferences=st.text_area('求职偏好（可选，不填则仅分析岗位）',max_chars=4000)
+        consent=st.checkbox('同意将选中岗位及偏好发送给以上 API 服务')
+        submitted=st.form_submit_button('分析此岗位',disabled=not selected_rows)
+    if submitted:
+        if not consent:st.error('请先确认发送范围')
+        else:
+            try:
+                with st.spinner('分析中，最多等待约60秒；失败不会自动重试'):
+                    record=analyze(selected,api_key,base_url,model,preferences)
+                    save_analysis(record)
+                st.success('分析已单独保存，原始岗位未改动')
+            except ValueError as e:st.error(str(e))
+            except Exception:st.error('分析或保存失败，请检查本地数据库与服务配置')
+    if selected_rows:
+        history=load_analyses(selected)
+        for record in history:
+            st.caption(f"{record['created_at']} · {record['model']} · {record['verification']}")
+            st.text(record['content'])
+        if history:
+            st.download_button('导出该岗位最近20次分析（含原文快照）',json.dumps(history,ensure_ascii=False,indent=2).encode('utf-8'),'job-analyses.json','application/json')

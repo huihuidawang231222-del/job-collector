@@ -15,6 +15,8 @@ class AppTests(unittest.TestCase):
                 core.DB = Path(directory) / 'jobs.sqlite3'
                 app = AppTest.from_file(str(Path(__file__).with_name('app.py'))).run(timeout=30)
                 self.assertEqual(len(app.exception), 0)
+                self.assertTrue(any(x.label == 'API Key（仅在本次本地会话使用，不写入文件）' for x in app.text_input))
+                self.assertTrue(next(x for x in app.button if x.label == '分析此岗位').disabled)
                 core.save([dict(title='合成测试分析师', company='测试公司', location='广州',
                                 url='https://example.com/test-job', jd='本科 SQL')])
                 app.run(timeout=30)
@@ -30,6 +32,7 @@ class AppTests(unittest.TestCase):
                 search.set_value('没有匹配的合成岗位').run(timeout=30)
                 self.assertEqual(len(app.exception), 0)
                 self.assertTrue(any('筛选结果：0 条' in x.value for x in app.markdown))
+                self.assertTrue(next(x for x in app.button if x.label == '分析此岗位').disabled)
         finally:
             core.DB = previous
 
