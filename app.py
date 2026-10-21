@@ -1,10 +1,12 @@
 import io, json, subprocess, sys, zipfile
 from pathlib import Path
-from classify import export_rows, enrich
+from classify import export_rows, enrich, EXPORT_COLUMNS
 from auto_collect import DATA, STATUS, STOP, RESUME, PLATFORMS
 import pandas as pd
 import streamlit as st
 from core import save,load
+from transfer import read_import, csv_cell
+from analysis_api import analyze, save_analysis, load_analyses, DEFAULT_BASE_URL, DEFAULT_MODEL
 st.set_page_config(page_title='岗位收集箱',page_icon='💼',layout='wide')
 st.title('💼 岗位收集箱')
 st.caption('本地独立版 · 浏览器辅助采集 · 筛选与导出')
@@ -41,12 +43,11 @@ with st.expander('自动搜索采集', expanded=True):
     if right.button('停止采集'):
         DATA.mkdir(exist_ok=True);STOP.touch();st.info('已请求停止，将在当前页面操作结束后退出。')
 with st.expander('导入 CSV / JSON 与手动补录'):
-    st.caption('CSV 字段：title, company, salary, location, source, url, benefits, raw。title 必填。')
+    st.caption('支持本软件导出的中文 CSV / JSON，也支持 title、company、salary、location、source、url、benefits、raw、jd、industry_raw 等英文字段。岗位名称必填；空字段保留已有内容，不用于清空。')
     f=st.file_uploader('选择文件',type=['csv','json'])
     if st.button('导入文件',disabled=f is None):
         try:
-            records=pd.read_csv(f).fillna('').to_dict('records') if f.name.endswith('.csv') else json.load(f)
-            if not isinstance(records,list) or any(not isinstance(x,dict) for x in records): raise ValueError('JSON 必须是对象数组')
+            records=read_import(f.getvalue(),f.name)
             st.success('新增 %s 条，更新 %s 条，跳过 %s 条'%save(records))
         except Exception as e: st.error(str(e))
     with st.form('manual'):
@@ -81,9 +82,39 @@ if rows:
     if weekends: df=df[df.weekends=='双休']
     st.write(f'筛选结果：{len(df)} 条。薪资未能识别的岗位，在薪资筛选时不计入。')
     st.dataframe(df,hide_index=True,column_config={'url':st.column_config.LinkColumn('岗位链接')})
-    df=pd.DataFrame(export_rows(df.to_dict('records')))
+    with st.expander('AI 岗位分析（第三方 API）'):
+        st.caption('默认智谱 glm-4.7-flash。每次只发送选中的一条岗位及求职偏好，不发送数据库或浏览器登录信息。分析单独保存，不修改岗位原文。')
+        selected_rows=df.to_dict('records')
+        if selected_rows:
+            index=st.selectbox('选择岗位',range(len(selected_rows)),format_func=lambda i:f"{i+1}. {selected_rows[i]['title']} · {selected_rows[i].get('company','')} · {selected_rows[i].get('location','')}")
+            selected=selected_rows[index]
+            with st.form('analysis'):
+                base_url=st.text_input('API Base URL',value=DEFAULT_BASE_URL)
+                model=st.text_input('模型名称',value=DEFAULT_MODEL)
+                api_key=st.text_input('API Key（仅在本次本地会话使用，不写入文件）',type='password')
+                preferences=st.text_area('求职偏好（可选，不填则仅分析岗位）',max_chars=4000)
+                consent=st.checkbox('同意将选中岗位及偏好发送给以上 API 服务')
+                submitted=st.form_submit_button('分析此岗位')
+            if submitted:
+                if not consent:st.error('请先确认发送范围')
+                else:
+                    try:
+                        with st.spinner('分析中，最多等待约60秒；失败不会自动重试'):
+                            record=analyze(selected,api_key,base_url,model,preferences)
+                            save_analysis(record)
+                        st.success('分析已单独保存，原始岗位未改动')
+                    except ValueError as e:st.error(str(e))
+                    except Exception:st.error('分析或保存失败，请检查本地数据库与服务配置')
+            history=load_analyses(selected)
+            for record in history:
+                st.caption(f"{record['created_at']} · {record['model']} · {record['verification']}")
+                st.text(record['content'])
+            if history:
+                st.download_button('导出该岗位最近20次分析（含原文快照）',json.dumps(history,ensure_ascii=False,indent=2).encode('utf-8'),'job-analyses.json','application/json')
+        else:st.info('当前筛选无岗位，请调整筛选条件。')
+    df=pd.DataFrame(export_rows(df.to_dict('records')),columns=list(EXPORT_COLUMNS.values()))
     # Neutralize formula injection when a CSV is opened by spreadsheet software.
-    safe=df.map(lambda v:"'"+v if isinstance(v,str) and v.lstrip().startswith(('=','+','-','@')) else v)
+    safe=df.map(csv_cell)
     st.download_button('导出 CSV（Excel 可打开）',safe.to_csv(index=False).encode('utf-8-sig'),'jobs.csv','text/csv')
     st.download_button('导出 JSON（后续接入网站）',df.to_json(orient='records',force_ascii=False,indent=2).encode(),'jobs.json','application/json')
 

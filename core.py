@@ -1,6 +1,7 @@
 import re, sqlite3, json, hashlib
 from pathlib import Path
 from datetime import datetime, timezone
+from contextlib import contextmanager
 from urllib.parse import urlsplit, urlunsplit
 from classify import enrich
 ROOT=Path(__file__).resolve().parent
@@ -12,24 +13,38 @@ def salary(text):
     units={'k':1000,'千':1000,'万':10000,'':1}
     a,b=float(m[1])*units[m[2] or m[4]],float(m[3])*units[m[4]]
     return (a,b) if a<=b else (None,None)
+@contextmanager
 def connect():
     DB.parent.mkdir(exist_ok=True)
     c=sqlite3.connect(DB)
-    c.execute('CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, payload TEXT NOT NULL)')
-    return c
+    try:
+        with c:
+            c.execute('CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, payload TEXT NOT NULL)')
+            yield c
+    finally:
+        c.close()
+def job_id(row):
+    url=row.get('url','')
+    if url:
+        u=urlsplit(url); url=urlunsplit((u.scheme,u.netloc,u.path,u.query,''))
+    key=url or '|'.join(row.get(k,'') for k in ['source','title','company','location'])
+    return hashlib.sha256(key.encode()).hexdigest()
+
 def save(rows):
     added=updated=skipped=0
     with connect() as c:
         for raw in rows:
-            r={k:str(v or '').strip() for k,v in raw.items()}
+            r={k:('' if v is None else str(v)).strip() for k,v in raw.items()}
             if not r.get('title'): skipped+=1; continue
             if r.get('url'):
                 u=urlsplit(r['url']); r['url']=urlunsplit((u.scheme,u.netloc,u.path,u.query,''))
-            key=r.get('url') or '|'.join(r.get(k,'') for k in ['source','title','company','location'])
-            ident=hashlib.sha256(key.encode()).hexdigest()
+            ident=job_id(r)
             old=c.execute('SELECT payload FROM jobs WHERE id=?',(ident,)).fetchone()
+            previous=json.loads(old[0]) if old else {}
+            # Empty or absent fields from a list capture must not erase detail data.
+            r={**previous, **{k:v for k,v in r.items() if v != ''}}
             now=datetime.now(timezone.utc).isoformat(timespec='seconds')
-            r['first_seen']=json.loads(old[0])['first_seen'] if old else now
+            r['first_seen']=previous.get('first_seen') or r.get('first_seen') or now
             r['last_seen']=now
             r['salary_min'],r['salary_max']=salary(r.get('salary',''))
             text=r.get('raw','')+' '+r.get('benefits','')

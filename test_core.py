@@ -23,7 +23,6 @@ class CoreTests(unittest.TestCase):
                 self.assertEqual(rows[0]['salary_min'],10000)
                 self.assertEqual(rows[0]['first_seen'],first)
         finally: core.DB=original
-if __name__=='__main__':unittest.main()
 
 class ClassificationTests(unittest.TestCase):
     def test_classify_and_export(self):
@@ -46,7 +45,8 @@ class AutomaticCollectionTests(unittest.TestCase):
     def test_limit_and_automatic_scroll(self):
         from unittest.mock import patch,MagicMock
         import auto_collect as ac
-        page=MagicMock();batches=iter([{'rows':[dict(title='A',url='https://example.com/1')]},{'rows':[dict(title='B',url='https://example.com/2')]}])
+        page=MagicMock()
+        batches=iter([{'rows':[dict(title='A',url='https://example.com/1')]},{'rows':[dict(title='B',url='https://example.com/2')]}])
         def evaluate(script):
             if script.startswith('() => {window.scrollTo'):return None
             return next(batches)
@@ -63,3 +63,5 @@ class AutomaticCollectionTests(unittest.TestCase):
         with patch.object(ac,'stopped',return_value=False),patch.object(ac,'blocked',return_value=True),patch.object(ac,'pause',return_value=False):
             n,why=ac.collect(page,{'host':'example.com'},'分析',2,10,False)
         self.assertEqual(n,0);page.evaluate.assert_not_called()
+
+if __name__=='__main__':unittest.main()
