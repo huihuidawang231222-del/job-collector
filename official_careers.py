@@ -78,7 +78,9 @@ def matches(row,keyword,city):
     cities=[city.casefold()]
     if city=='广州':cities+=['guangzhou','canton']
     loc=str(row.get('location','')).casefold()
-    return (not keys or any(k in text for k in keys)) and (not city or any(c in loc for c in cities))
+    def hit(k):
+        return bool(re.search(r'(?<![a-z])'+re.escape(k)+r'(?![a-z])',text)) if k.isascii() and k.isalpha() and len(k)<=4 else k in text
+    return (not keys or any(hit(k) for k in keys)) and (not city or any(c in loc for c in cities))
 
 def listing_state(row):
     value=str(row.get('valid_through',''))

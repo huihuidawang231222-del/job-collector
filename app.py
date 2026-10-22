@@ -12,6 +12,38 @@ st.set_page_config(page_title='岗位收集箱',page_icon='💼',layout='wide')
 st.title('💼 岗位收集箱')
 st.caption('本地独立版 · 浏览器辅助采集 · 筛选与导出')
 st.caption('四个平台规则仍待真实登录联调；自动流程已实现，成功数量以任务结果为准。')
+with st.expander('官网公开岗位批量采集与验收', expanded=True):
+    from feed_collect import STATUS as FEED_STATUS, STOP as FEED_STOP
+    st.caption('使用Lever官方公开岗位接口批量获取完整JD，无需账号或API密钥。默认仍筛选广州；没有足够匹配岗位时明确显示数量不足。地区和关键词都留空可做跨地区容量测试。')
+    feed_catalog=json.loads(Path(__file__).with_name('feed_sources.json').read_text(encoding='utf-8'))
+    with st.form('bulk_feed'):
+        feed_keyword=st.text_input('批量岗位关键词（逗号分隔；留空不限）',value='数据分析,GIS,运营分析,analyst')
+        feed_city=st.text_input('批量岗位城市（留空不限地区）',value='广州')
+        feed_choices=st.multiselect('雇主公开岗位列表',[x['company'] for x in feed_catalog],default=[x['company'] for x in feed_catalog])
+        feed_target=st.number_input('单次任务验收目标（去重且有完整JD）',min_value=1,max_value=1000,value=100)
+        feed_pages=st.number_input('每个雇主最多接口分页（每页最多200条）',min_value=1,max_value=5,value=2)
+        feed_refresh=st.checkbox('重新读取并更新已有岗位（默认已有完整JD不计入新采集）')
+        feed_launch=st.form_submit_button('开始批量采集与验收')
+    if feed_launch:
+        DATA.mkdir(exist_ok=True)
+        chosen=[x for x in feed_catalog if x['company'] in feed_choices]
+        if (DATA/'worker.lock').exists():st.error('已有采集任务运行或旧进程锁未清理')
+        elif not chosen:st.error('请选择至少一个雇主')
+        else:
+            source_path=DATA/'feed-task-sources.json';source_path.write_text(json.dumps(chosen,ensure_ascii=False),encoding='utf-8')
+            cmd=[sys.executable,str(Path(__file__).with_name('feed_collect.py')),'--sources',str(source_path),'--keyword',feed_keyword,'--city',feed_city,'--target',str(feed_target),'--pages',str(feed_pages)]
+            if feed_refresh:cmd.append('--refresh')
+            with (DATA/'feed-worker.log').open('a',encoding='utf-8') as log:subprocess.Popen(cmd,cwd=str(Path(__file__).parent),stdout=log,stderr=log)
+            st.success('已启动。只有本次任务实际保存并从数据库读回的唯一岗位计入验收。')
+    if st.button('停止批量采集'):
+        DATA.mkdir(exist_ok=True);FEED_STOP.touch()
+    if FEED_STATUS.exists():
+        try:
+            feed_state=json.loads(FEED_STATUS.read_text(encoding='utf-8'))
+            st.json({k:v for k,v in feed_state.items() if k!='manifest'})
+            if 'manifest' in feed_state:
+                st.download_button('下载本次采集验收清单（含来源和JD校验值）',json.dumps(feed_state,ensure_ascii=False,indent=2).encode('utf-8'),'collection-acceptance.json','application/json')
+        except (ValueError,OSError):st.caption('批量状态更新中')
 with st.expander('公司官网岗位搜索', expanded=True):
     from official_careers import STATUS as OFFICIAL_STATUS, STOP as OFFICIAL_STOP
     st.caption('从公司招聘入口及其直接链接的网申系统提取公开JD，已有完整JD默认跳过。只将明确包含岗位地点的记录计入城市匹配。')

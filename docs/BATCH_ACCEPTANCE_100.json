@@ -1,0 +1,969 @@
+{
+  "task_id": "09fc8f0382b8497196ad73dc9237ed6d",
+  "state": "passed",
+  "acceptance_passed": true,
+  "target": 100,
+  "filters": {
+    "city": "不限地区",
+    "keyword": "不限岗位类型"
+  },
+  "metrics": {
+    "saved_unique": 100,
+    "complete_jd": 100,
+    "unique_urls": 100,
+    "unique_source_ids": 100,
+    "guangzhou": 11,
+    "guangzhou_related": 1,
+    "companies": {
+      "Ninja Van": 79,
+      "Coates Group": 15,
+      "Pattern": 6
+    }
+  },
+  "writes": {
+    "added": 100,
+    "updated": 0,
+    "skipped": 0
+  },
+  "network_requests": 4,
+  "elapsed_seconds": 52.66,
+  "sources": [
+    {
+      "company": "WeRide.ai 文远知行",
+      "examined": 15,
+      "eligible": 15,
+      "requests": 1,
+      "state": "completed"
+    },
+    {
+      "company": "Coates Group",
+      "examined": 16,
+      "eligible": 15,
+      "requests": 1,
+      "state": "completed"
+    },
+    {
+      "company": "Ninja Van",
+      "examined": 139,
+      "eligible": 138,
+      "requests": 1,
+      "state": "completed"
+    },
+    {
+      "company": "Pattern",
+      "examined": 94,
+      "eligible": 93,
+      "requests": 1,
+      "state": "completed"
+    }
+  ],
+  "finished_at": "2026-10-22T07:26:48+00:00",
+  "manifest": [
+    {
+      "url": "https://jobs.lever.co/ninjavan/7b955a55-b00f-4683-9eac-043e25c2c694",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant (Taman Desa)",
+      "location": "Selangor, Malaysia",
+      "source_job_id": "7b955a55-b00f-4683-9eac-043e25c2c694",
+      "jd_chars": 2791,
+      "jd_sha256": "eec747230cf7cfdc41a664d3d4c2a26985f809c8a5e1bcdb094f4fb59f4c9c72"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/7b216f18-d6e4-4770-872a-9429b9269061",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant - Pasir Gudang",
+      "location": "未说明",
+      "source_job_id": "7b216f18-d6e4-4770-872a-9429b9269061",
+      "jd_chars": 3090,
+      "jd_sha256": "48915a37bb18ee2b83a2d215f1f37277da4ebb3cd9378e0470a0b78216bdc8d1"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/797c39eb-1617-4a4e-b933-81464bacb8dd",
+      "company": "Ninja Van",
+      "title": "Supervisor, Ninja Mart (Sales) - Sungai Petani",
+      "location": "Kedah, Malaysia",
+      "source_job_id": "797c39eb-1617-4a4e-b933-81464bacb8dd",
+      "jd_chars": 523,
+      "jd_sha256": "17c2bc4815f9545e30a7b9a6ed6385664c32f7c6e9aea796f5c8a2ed97ba602f"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/78d5fb88-5683-48dc-9b56-2f15b39a8ea1",
+      "company": "Ninja Van",
+      "title": "Freelance/Contractor/Last Mile Delivery Driver",
+      "location": "Singapore, Singapore",
+      "source_job_id": "78d5fb88-5683-48dc-9b56-2f15b39a8ea1",
+      "jd_chars": 1797,
+      "jd_sha256": "3a2db6f54fce84efe47e69e418cba0e0e61e2de1e0a2630e1e371d636cd5a445"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6e9bfd62-127c-4bfb-9aa9-3a1ba4ac1c82",
+      "company": "Ninja Van",
+      "title": "Hybrid Driver - Seremban (Full Time)",
+      "location": "Melaka, Malaysia",
+      "source_job_id": "6e9bfd62-127c-4bfb-9aa9-3a1ba4ac1c82",
+      "jd_chars": 3281,
+      "jd_sha256": "86c9df117a66fed528f6d701848a28042c99853e78c1e276e9594d16e6a5d6df"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6dcb9e6c-50d3-4755-920c-9d4f01e4ced8",
+      "company": "Ninja Van",
+      "title": "Pre-Sales (FMCG - Ninja Mart) - Temerloh",
+      "location": "Pahang, Malaysia",
+      "source_job_id": "6dcb9e6c-50d3-4755-920c-9d4f01e4ced8",
+      "jd_chars": 1458,
+      "jd_sha256": "236270763215289aa396bf3217dcf3ba25b097bb88a8381b3d4688d87b9474d4"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6db2eae0-04bf-4539-91e2-b5a84703e47f",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant (Segambut)",
+      "location": "Selangor, Malaysia",
+      "source_job_id": "6db2eae0-04bf-4539-91e2-b5a84703e47f",
+      "jd_chars": 2791,
+      "jd_sha256": "eec747230cf7cfdc41a664d3d4c2a26985f809c8a5e1bcdb094f4fb59f4c9c72"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6d10a6d3-a6a7-477a-8b48-4dde6459898f",
+      "company": "Ninja Van",
+      "title": "Assistant, Retail (Sales)",
+      "location": "Kuala Lumpur, Malaysia",
+      "source_job_id": "6d10a6d3-a6a7-477a-8b48-4dde6459898f",
+      "jd_chars": 2829,
+      "jd_sha256": "f42a35ba65e2df5b7fa3040746d67ee8729ef443f47bcfb2bfc9bd26ea0cf800"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6caa23bf-93e0-46da-8b2a-f5e04372fb18",
+      "company": "Ninja Van",
+      "title": "Hybrid Driver - Taman Desa,Kuala Lumpur (Full- Time)",
+      "location": "Kuala Lumpur, Malaysia",
+      "source_job_id": "6caa23bf-93e0-46da-8b2a-f5e04372fb18",
+      "jd_chars": 3152,
+      "jd_sha256": "ac44981194de1c4f4c3631039420ab4648e2a57367b67eda087901136a9955bc"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6c2d5fa4-bfed-4ccf-ab9c-08e6fcf351fe",
+      "company": "Ninja Van",
+      "title": "Executive, Fulfilment (Key Account Management)",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "6c2d5fa4-bfed-4ccf-ab9c-08e6fcf351fe",
+      "jd_chars": 2830,
+      "jd_sha256": "3c2b9d160b4df55f7ce64121c12b2213d1507af38abc0dcaf275199d7c7da0fd"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/6a0b18c2-c5ec-4ea0-8325-d3438be2212a",
+      "company": "Ninja Van",
+      "title": "Driver / Rider - LARKIN, JOHOR (Part-time)",
+      "location": "Johor, Malaysia",
+      "source_job_id": "6a0b18c2-c5ec-4ea0-8325-d3438be2212a",
+      "jd_chars": 2623,
+      "jd_sha256": "7b07b4ff30d5b66f0c2f4e6c7b15f6e62c85823192de270cbdccf548761f9b09"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/68f3b122-806e-4f4e-8a7a-7052ecca3dcf",
+      "company": "Ninja Van",
+      "title": "Recovery Officer",
+      "location": "Calamba, Laguna",
+      "source_job_id": "68f3b122-806e-4f4e-8a7a-7052ecca3dcf",
+      "jd_chars": 2282,
+      "jd_sha256": "e59dd7488cb8fc73cbe3d8b6295ea7fb2136db25ee01d36b9c98e2d5d35cf50f"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/5f5944a2-0bd2-4d28-bdfc-641e922acf5f",
+      "company": "Ninja Van",
+      "title": "Sales Executive (B2B / Logistics)  เจ้าหน้าที่ฝ่ายขาย (B2B)",
+      "location": "Bangkok, Thailand",
+      "source_job_id": "5f5944a2-0bd2-4d28-bdfc-641e922acf5f",
+      "jd_chars": 4195,
+      "jd_sha256": "33855bdda7e3cc831316b6ef51638058faff521502e4971184597e39306e2b41"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/5d9f3095-1b00-4b67-84ac-636247cdf12e",
+      "company": "Ninja Van",
+      "title": "Regional Senior Associate, Cross Border (Finance Operations)",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "5d9f3095-1b00-4b67-84ac-636247cdf12e",
+      "jd_chars": 5289,
+      "jd_sha256": "7fd656dea75071577d52a7edae04af858a579a85c24b568a899f2730d0278cc8"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/5c4a9bdb-3458-4051-b1b2-4c5f90835b90",
+      "company": "Ninja Van",
+      "title": "Manager, Ninja Mart (Sales Excellence)",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "5c4a9bdb-3458-4051-b1b2-4c5f90835b90",
+      "jd_chars": 4326,
+      "jd_sha256": "b7136e20f0ef3a381b17f9557768547ff68d2b91bebf04f5ad9a8d9014f02785"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/59939736-b6ed-49e8-a8e6-f1b5ef479a6b",
+      "company": "Ninja Van",
+      "title": "Business Development Executive (Purwokerto)",
+      "location": "Central Java, Indonesia",
+      "source_job_id": "59939736-b6ed-49e8-a8e6-f1b5ef479a6b",
+      "jd_chars": 1770,
+      "jd_sha256": "1c98f4f5d2e2b50a50c8363d361e5fc24a836bbea624fb74999873f7bfbc2499"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/58268f31-ca50-4b60-82a0-89f25e65d7de",
+      "company": "Ninja Van",
+      "title": "Manager, Fulfilment (Warehouse)",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "58268f31-ca50-4b60-82a0-89f25e65d7de",
+      "jd_chars": 4059,
+      "jd_sha256": "30960d99565f7123d1fa7696d868543f374913d0af1126ce1017a53cd80ae2e8"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/581f90fe-90d1-4c37-b051-3a6bce4a7254",
+      "company": "Ninja Van",
+      "title": "Delivery Driver (Part-time/Flexi)",
+      "location": "Singapore, Singapore",
+      "source_job_id": "581f90fe-90d1-4c37-b051-3a6bce4a7254",
+      "jd_chars": 1921,
+      "jd_sha256": "bfd433f3417d3e7e9293b9b1ea810561f939fbc96d6ababc45a1985893c596b0"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/58112a98-fea8-44fa-b0d0-508e4199aa32",
+      "company": "Ninja Van",
+      "title": "Pre-Sales (FMCG - Ninja Mart) - Wilayah Utara",
+      "location": "未说明",
+      "source_job_id": "58112a98-fea8-44fa-b0d0-508e4199aa32",
+      "jd_chars": 1261,
+      "jd_sha256": "e220a5c6caf1183a2c0406778063d13fdf6355d6a971a334dfe9dc112119e74b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/57e121f2-96dd-479e-a0b8-f70afd56bc6c",
+      "company": "Ninja Van",
+      "title": "Manager, Fulfilment (Business Development)",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "57e121f2-96dd-479e-a0b8-f70afd56bc6c",
+      "jd_chars": 3306,
+      "jd_sha256": "6476e06f7f5b7f114c2fadbcb949354ab6ccadf8925eb1d15d701e3de3bcab00"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/559f72ab-de6e-49e7-94c1-361d6dcf4abc",
+      "company": "Ninja Van",
+      "title": "Staff Class 4 Driver (Full Time)",
+      "location": "Singapore, Singapore",
+      "source_job_id": "559f72ab-de6e-49e7-94c1-361d6dcf4abc",
+      "jd_chars": 2203,
+      "jd_sha256": "725ecb84587858f87ca87c6a76d7b7631668d97ea13e2cd03ef170006623fc3c"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/5592d8e8-697c-44a3-8625-36a810f684f0",
+      "company": "Ninja Van",
+      "title": "Fulfillment Sales Manager",
+      "location": "Taguig, Philippines",
+      "source_job_id": "5592d8e8-697c-44a3-8625-36a810f684f0",
+      "jd_chars": 3300,
+      "jd_sha256": "04f871739503fc311fe1ddda10d8ab85c42354db07240c7d29b0795d2f1fc444"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/55910d29-4876-49f1-b8d4-50344e823fec",
+      "company": "Ninja Van",
+      "title": "Customer Service Representative (Project-Based)",
+      "location": "Taguig, Philippines",
+      "source_job_id": "55910d29-4876-49f1-b8d4-50344e823fec",
+      "jd_chars": 1248,
+      "jd_sha256": "3c7bb73dcc825d4b6fecfb7ca29010280e105d4ff77f52f8f3d720bb4841edb5"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/538fd3f6-cf8d-4257-9d5c-075d67271000",
+      "company": "Ninja Van",
+      "title": "Head of B2B Sales (East & Central Java)",
+      "location": "East Java, Indonesia",
+      "source_job_id": "538fd3f6-cf8d-4257-9d5c-075d67271000",
+      "jd_chars": 1999,
+      "jd_sha256": "735381ecff020d28e0063ab43dd9b224c5cf8d5f2bf499931038abe989aeff94"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/52865086-e9d0-41da-a38c-ba973931c39d",
+      "company": "Ninja Van",
+      "title": "Fulfillment Warehouse Assistant",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "52865086-e9d0-41da-a38c-ba973931c39d",
+      "jd_chars": 820,
+      "jd_sha256": "7dcf7451368efac39bf7b36165cdb2c80c81bac6a4948febb0b77a3437a073b4"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/5235fd7d-15f2-4116-bfc5-c0bd0b45c1f6",
+      "company": "Ninja Van",
+      "title": "Warehouse Supervisor",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "5235fd7d-15f2-4116-bfc5-c0bd0b45c1f6",
+      "jd_chars": 1298,
+      "jd_sha256": "b4478feee9c990e55c7f20fad61199ab2c920da37005b0b38d4f259398ea88e3"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4fd5e59c-4797-477e-b48e-b2f9e43cd7ae",
+      "company": "Ninja Van",
+      "title": "B2B Sales Insights Intern",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "4fd5e59c-4797-477e-b48e-b2f9e43cd7ae",
+      "jd_chars": 631,
+      "jd_sha256": "edda0c855de87d8c5add79c4c75e1b439d06c421767edd8793a0cd07311d72e4"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4fc7bb62-fb71-4ac3-a0af-90427cafbb01",
+      "company": "Ninja Van",
+      "title": "Fulfillment Senior Operations Lead",
+      "location": "Cabuyao, Laguna, Philippines",
+      "source_job_id": "4fc7bb62-fb71-4ac3-a0af-90427cafbb01",
+      "jd_chars": 3413,
+      "jd_sha256": "eef2eaed335bc0138e251bbec44af2087bbfb73e871e588e212949e080669d87"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4ea5e1f6-b21f-438f-ac26-f62b9b85e95f",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant (Chow Kit)",
+      "location": "Selangor, Malaysia",
+      "source_job_id": "4ea5e1f6-b21f-438f-ac26-f62b9b85e95f",
+      "jd_chars": 2791,
+      "jd_sha256": "eec747230cf7cfdc41a664d3d4c2a26985f809c8a5e1bcdb094f4fb59f4c9c72"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4d4e1aee-32d7-4988-8d9c-0f482eb7de52",
+      "company": "Ninja Van",
+      "title": "Relationship Manager",
+      "location": "Taguig, Philippines",
+      "source_job_id": "4d4e1aee-32d7-4988-8d9c-0f482eb7de52",
+      "jd_chars": 2958,
+      "jd_sha256": "70e6439cdffdc060691eaa24f27af9810e32c0ffa3da3b9dbd143c56f21c254f"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4c97113c-5cce-4658-96cb-4c4c3b27d9a7",
+      "company": "Ninja Van",
+      "title": "Class 3 Delivery Staff Driver",
+      "location": "Singapore, Singapore",
+      "source_job_id": "4c97113c-5cce-4658-96cb-4c4c3b27d9a7",
+      "jd_chars": 1990,
+      "jd_sha256": "54a1be16109dddb46f945907d701aae8ad37b29cf0f038c354ddf68c497d829b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4b7f6418-f924-46f1-8f8c-a29a314e8744",
+      "company": "Ninja Van",
+      "title": "Fulfillment Admin Intern",
+      "location": "Cabuyao, Laguna, Philippines",
+      "source_job_id": "4b7f6418-f924-46f1-8f8c-a29a314e8744",
+      "jd_chars": 1449,
+      "jd_sha256": "e41a7065caf1e87d5d02ef439c83b1fe69a1877618d751ceada390d7049e4b3b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/4a3a4f89-d08a-4f26-bfbb-9a0f79ec00d0",
+      "company": "Ninja Van",
+      "title": "Talent Acquisition Intern",
+      "location": "Taguig, Philippines",
+      "source_job_id": "4a3a4f89-d08a-4f26-bfbb-9a0f79ec00d0",
+      "jd_chars": 2867,
+      "jd_sha256": "7c19f6598484e9d78ff0225aa44cd3b0478184543717ce636fb6decbed3af5bc"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/44314f2e-ca10-48ea-8da8-bd5c618a2a8b",
+      "company": "Ninja Van",
+      "title": "Senior Assosicate, PMO",
+      "location": "Bangkok, Thailand",
+      "source_job_id": "44314f2e-ca10-48ea-8da8-bd5c618a2a8b",
+      "jd_chars": 5665,
+      "jd_sha256": "47a8c82a43d93c2c5338b46b39e60edfeab4524c8119e5a120f3411ac6d051d5"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/419ee85b-edd0-473e-b9f0-418e0b23b060",
+      "company": "Ninja Van",
+      "title": "Supervisor, Ninja Mart (Operation) - Paka",
+      "location": "Terengganu, Malaysia",
+      "source_job_id": "419ee85b-edd0-473e-b9f0-418e0b23b060",
+      "jd_chars": 565,
+      "jd_sha256": "fa6bc3a5469c3f5d24de21b9ea857894d6b6a05b0c86402c7a93d5fa30b65325"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/416c9b07-d974-4e50-949b-92646305cf18",
+      "company": "Ninja Van",
+      "title": "Internship (Operation Excellence)",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "416c9b07-d974-4e50-949b-92646305cf18",
+      "jd_chars": 2940,
+      "jd_sha256": "be361fd6d49e4b5903ae6981eb897a73b510394dbb33600432b8f9189b2b3c6c"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/393ac169-a850-4d28-89b8-1fabde2609bf",
+      "company": "Ninja Van",
+      "title": "Manager, Business Development (B2B)",
+      "location": "Bangkok, Thailand",
+      "source_job_id": "393ac169-a850-4d28-89b8-1fabde2609bf",
+      "jd_chars": 5163,
+      "jd_sha256": "fcee9a492b63cda720e844eeb4c659c8dbe16aaff7903f1f86d7cac479bb9d97"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/38130b47-66d6-4cae-99eb-5afc15ff99d7",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant (OUG)",
+      "location": "Selangor, Malaysia",
+      "source_job_id": "38130b47-66d6-4cae-99eb-5afc15ff99d7",
+      "jd_chars": 2791,
+      "jd_sha256": "eec747230cf7cfdc41a664d3d4c2a26985f809c8a5e1bcdb094f4fb59f4c9c72"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/362e39ed-6c00-4afa-ab6f-0339f3babc61",
+      "company": "Ninja Van",
+      "title": "Service Recovery Operations Assistant",
+      "location": "Singapore, Singapore",
+      "source_job_id": "362e39ed-6c00-4afa-ab6f-0339f3babc61",
+      "jd_chars": 2641,
+      "jd_sha256": "24b52d292e063fdcc0bd3d8ffd155668d6a1ecd3a6ee29984fa28cd9edf4c71b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/35ea34e8-5ad6-472f-a31d-9b366ac2a7a6",
+      "company": "Ninja Van",
+      "title": "Admin, Last Mile",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "35ea34e8-5ad6-472f-a31d-9b366ac2a7a6",
+      "jd_chars": 2861,
+      "jd_sha256": "7c0e184b3056333685528595e72ab0b9405d1c454abb081bda62c27f5de498a4"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/353a5e0c-3431-4499-8048-5421372091d4",
+      "company": "Ninja Van",
+      "title": "Pre-Sales (FMCG - Ninja Mart) - Sitiawan",
+      "location": "Perak, Malaysia",
+      "source_job_id": "353a5e0c-3431-4499-8048-5421372091d4",
+      "jd_chars": 1644,
+      "jd_sha256": "c54842362a4d9ba37fba16a6930c376d17504cfa151509373891425225ce5638"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/33c27e39-dc1f-400a-a9aa-24c935fde81b",
+      "company": "Ninja Van",
+      "title": "Warehouse Assistant",
+      "location": "Singapore, Singapore",
+      "source_job_id": "33c27e39-dc1f-400a-a9aa-24c935fde81b",
+      "jd_chars": 1806,
+      "jd_sha256": "5029eaa749c1fd5d2248511ff6335da3e92b80e6543f0fa51b41b06f81024eac"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/30af0860-16cc-43fd-8fdb-a2df558241b6",
+      "company": "Ninja Van",
+      "title": "Operator, Fulfilment",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "30af0860-16cc-43fd-8fdb-a2df558241b6",
+      "jd_chars": 5066,
+      "jd_sha256": "d6d8e7858df8990219f1fe339d196f5511b12ce3a4af7472d697c0a4db5071af"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/27def7c1-91fa-4751-9f05-42c1945eb19b",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant (Kota Kemuning)",
+      "location": "Selangor, Malaysia",
+      "source_job_id": "27def7c1-91fa-4751-9f05-42c1945eb19b",
+      "jd_chars": 2791,
+      "jd_sha256": "eec747230cf7cfdc41a664d3d4c2a26985f809c8a5e1bcdb094f4fb59f4c9c72"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/276b2cc2-f7ed-4558-ba0b-210b44d6962f",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant (Sentul)",
+      "location": "Selangor, Malaysia",
+      "source_job_id": "276b2cc2-f7ed-4558-ba0b-210b44d6962f",
+      "jd_chars": 2791,
+      "jd_sha256": "eec747230cf7cfdc41a664d3d4c2a26985f809c8a5e1bcdb094f4fb59f4c9c72"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/26c10756-c801-44c8-9dbf-a42a40c19a7c",
+      "company": "Ninja Van",
+      "title": "Warehouse Assistant (FMCG) - Raub",
+      "location": "Pahang, Malaysia",
+      "source_job_id": "26c10756-c801-44c8-9dbf-a42a40c19a7c",
+      "jd_chars": 1211,
+      "jd_sha256": "c7ab5b13aed555a2121013314034982a51bbc936b5552ac02412a85bcd60e68e"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/21f29169-bc3a-42ab-9ad9-8ae7d2ebbf09",
+      "company": "Ninja Van",
+      "title": "Internship (Facilities)",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "21f29169-bc3a-42ab-9ad9-8ae7d2ebbf09",
+      "jd_chars": 3276,
+      "jd_sha256": "01d6c227d9768a386cfd1c4c6b292c2e7bc6ad6fa2ee41ab75a7dd16b3f5b99a"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/212d175e-c557-4473-8129-4070b754f424",
+      "company": "Ninja Van",
+      "title": "Sales Assistant (Seremban)",
+      "location": "Negeri Sembilan, Malaysia",
+      "source_job_id": "212d175e-c557-4473-8129-4070b754f424",
+      "jd_chars": 2829,
+      "jd_sha256": "f42a35ba65e2df5b7fa3040746d67ee8729ef443f47bcfb2bfc9bd26ea0cf800"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/1f4c9c3a-52e4-4b02-aa32-bb2a86acd3be",
+      "company": "Ninja Van",
+      "title": "Executive, Retail (Sales)",
+      "location": "Kuala Lumpur, Malaysia",
+      "source_job_id": "1f4c9c3a-52e4-4b02-aa32-bb2a86acd3be",
+      "jd_chars": 3489,
+      "jd_sha256": "a7501a942a6ea51a6ef7fd1eb8200797109fe6999e6e5a1b431942a7d2ad617b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/1ec7b4e9-f32b-431b-b826-dca4c5b5aa58",
+      "company": "Ninja Van",
+      "title": "Customer Service Agent (Inbound)",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "1ec7b4e9-f32b-431b-b826-dca4c5b5aa58",
+      "jd_chars": 2814,
+      "jd_sha256": "c936c32b08e224f3d15b20920098c7b2be021c6f86b36d1053a678e7e5e6a0f9"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/1d0b66de-1ef4-4aa9-a6c8-675ad5fe8cc6",
+      "company": "Ninja Van",
+      "title": "Sales Intern",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "1d0b66de-1ef4-4aa9-a6c8-675ad5fe8cc6",
+      "jd_chars": 1037,
+      "jd_sha256": "b4689c5f91805fe05267484de86f41c606790de016ec39f57db2e3d807f5434a"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/1927f397-9101-451c-bba7-0fa82c60f1e6",
+      "company": "Ninja Van",
+      "title": "Senior Manager, Business Development (Commercial)",
+      "location": "Ho Chi Minh City, Vietnam",
+      "source_job_id": "1927f397-9101-451c-bba7-0fa82c60f1e6",
+      "jd_chars": 6322,
+      "jd_sha256": "8f6611bd6bbadf4305642f5084a2c82106b4a86df5ed146b499a29bd4882c528"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/1801afa9-a626-4347-959d-79199388bff6",
+      "company": "Ninja Van",
+      "title": "Internship, Marketing",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "1801afa9-a626-4347-959d-79199388bff6",
+      "jd_chars": 675,
+      "jd_sha256": "edec4f64dd2002b41d40ce97d6b6eb100e35fdb6656676b132376b24e0defcfb"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/17fe8dfe-0f7b-44be-9159-8bf259ba88f3",
+      "company": "Ninja Van",
+      "title": "Fleet Assistant - Gelang Patah",
+      "location": "Johor, Malaysia",
+      "source_job_id": "17fe8dfe-0f7b-44be-9159-8bf259ba88f3",
+      "jd_chars": 3089,
+      "jd_sha256": "5bd7013a58ac9e0d356764861ef952e94df8190309f8216e40c646b3a3c92810"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/175f6681-ec07-44da-80cf-f290dc71b76f",
+      "company": "Ninja Van",
+      "title": "Senior Technical Support Executive, Digital Services",
+      "location": "Jakarta, Indonesia",
+      "source_job_id": "175f6681-ec07-44da-80cf-f290dc71b76f",
+      "jd_chars": 3288,
+      "jd_sha256": "c0096cf1f580fc0bcdac4ed57e83c895447019a475eff595890097ab735fbd65"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/16ad9786-15c3-4017-bce3-f6e7a4b19656",
+      "company": "Ninja Van",
+      "title": "Supervisor, Ninja Mart (Operation) - Batu Pahat",
+      "location": "Johor, Malaysia",
+      "source_job_id": "16ad9786-15c3-4017-bce3-f6e7a4b19656",
+      "jd_chars": 565,
+      "jd_sha256": "fa6bc3a5469c3f5d24de21b9ea857894d6b6a05b0c86402c7a93d5fa30b65325"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/134f70fa-94ec-4028-80ad-6e240e3c9802",
+      "company": "Ninja Van",
+      "title": "Internship (IT)",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "134f70fa-94ec-4028-80ad-6e240e3c9802",
+      "jd_chars": 2892,
+      "jd_sha256": "80eb3d52df40dbc634816e70a3c6f60f78f625edcc6066ea32154b0a8425f87a"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/11b0196c-f83c-48bf-a8d0-62708151c954",
+      "company": "Ninja Van",
+      "title": "Operation Support, Last Mile",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "11b0196c-f83c-48bf-a8d0-62708151c954",
+      "jd_chars": 1214,
+      "jd_sha256": "b8c79783caeaf3f3bf11b7e672849fb46819f6b05a8c77adf2b4841f21dbcb8c"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/0e642ef6-e81a-407d-9795-c3894264d747",
+      "company": "Ninja Van",
+      "title": "Walk In Interview - Warehouse Operator (15 October 2026)",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "0e642ef6-e81a-407d-9795-c3894264d747",
+      "jd_chars": 1318,
+      "jd_sha256": "0e48c64578f81052dd321899058da3a6757c3b06769ef1f7c3978b40d32e7f74"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/0bd3080e-57df-4613-aee4-53faf5b7cb8f",
+      "company": "Ninja Van",
+      "title": "Warehouse Operator",
+      "location": "Shah Alam, Selangor, Malaysia",
+      "source_job_id": "0bd3080e-57df-4613-aee4-53faf5b7cb8f",
+      "jd_chars": 2394,
+      "jd_sha256": "282dcda61cf31272899c25775e499de5aba93a71bfa0a5e3b38ba4a53d9a50dd"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/0b5ca845-1e59-4a41-a972-759d61cfa4a6",
+      "company": "Ninja Van",
+      "title": "Account Management Associate",
+      "location": "Singapore, Singapore",
+      "source_job_id": "0b5ca845-1e59-4a41-a972-759d61cfa4a6",
+      "jd_chars": 1960,
+      "jd_sha256": "eb1d39b9b387d66773c7d03d9c7941eef877980c4660902ed29485fac19d845e"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/0af9b1fb-c42a-48b4-a116-0ca0771adec8",
+      "company": "Ninja Van",
+      "title": "Internship, Procurement",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "0af9b1fb-c42a-48b4-a116-0ca0771adec8",
+      "jd_chars": 1406,
+      "jd_sha256": "45e73fef02a42d705751ca95fc431dbae5514e8a8b43c3262c5a8a41b3b7abc0"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/093d5f8d-b6dd-4cf4-874e-16b656d175c4",
+      "company": "Ninja Van",
+      "title": "Senior Corporate Sales Manager",
+      "location": "Taguig, Philippines",
+      "source_job_id": "093d5f8d-b6dd-4cf4-874e-16b656d175c4",
+      "jd_chars": 4975,
+      "jd_sha256": "a28b4d17abbde2aac13aaeb869eb4ca28df493f40fb33cd1409e53fccbfa9a8c"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/0719ebd9-0b5f-4c8a-877e-5b2198fd6c7a",
+      "company": "Ninja Van",
+      "title": "Pre-Sales (FMCG - Ninja Mart) - Seremban",
+      "location": "Negeri Sembilan, Malaysia",
+      "source_job_id": "0719ebd9-0b5f-4c8a-877e-5b2198fd6c7a",
+      "jd_chars": 1828,
+      "jd_sha256": "cd43ce971b3f00e87f5c0f3799b1285eb3ad69649f3832678fdd5560c0c225cb"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/05e6be56-078b-4dcc-b1ee-d4c9fb1e7e81",
+      "company": "Ninja Van",
+      "title": "Senior Relationship Executive",
+      "location": "Taguig, Philippines",
+      "source_job_id": "05e6be56-078b-4dcc-b1ee-d4c9fb1e7e81",
+      "jd_chars": 2570,
+      "jd_sha256": "ecae743ebf2edf7f66d053d92c8257de5c3d8d244dacbcc95a62a97b32077be2"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/03124650-b613-4cb5-8b7d-e778f59329a0",
+      "company": "Ninja Van",
+      "title": "Station Head (Seputeh)",
+      "location": "Kuala Lumpur, Malaysia",
+      "source_job_id": "03124650-b613-4cb5-8b7d-e778f59329a0",
+      "jd_chars": 906,
+      "jd_sha256": "b383f8191c553ca12de58085466980030b11e6101762f7720a05949bfd8116c6"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/02e6bba3-eda3-40e5-8396-88c4a9c7cf93",
+      "company": "Ninja Van",
+      "title": "Station Head (Farlim)",
+      "location": "Penang, Malaysia",
+      "source_job_id": "02e6bba3-eda3-40e5-8396-88c4a9c7cf93",
+      "jd_chars": 1242,
+      "jd_sha256": "d323d2dd6a9f3c1beca7f3994c3431e943f6d5b366792a91d7996b9fac901f4e"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/0088f142-5dcf-4b62-b089-cf72c6d5dddb",
+      "company": "Ninja Van",
+      "title": "Hybrid Rider - Taman Desa,Kuala Lumpur (Full- Time)",
+      "location": "Kuala Lumpur, Malaysia",
+      "source_job_id": "0088f142-5dcf-4b62-b089-cf72c6d5dddb",
+      "jd_chars": 3152,
+      "jd_sha256": "ac44981194de1c4f4c3631039420ab4648e2a57367b67eda087901136a9955bc"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/fc4dde06-58e0-49a7-b256-bb977940af01",
+      "company": "Coates Group",
+      "title": "Experience Designer, Future Experience",
+      "location": "Sydney",
+      "source_job_id": "fc4dde06-58e0-49a7-b256-bb977940af01",
+      "jd_chars": 7316,
+      "jd_sha256": "8eeb4b97f7e515c129c1f02bbf554e2b99ed037fd107f0f554d5878b66d41495"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/f6fd7d56-497a-4be6-8569-a89adf33a180",
+      "company": "Coates Group",
+      "title": "Senior Director, Engineering and Quality",
+      "location": "Sydney",
+      "source_job_id": "f6fd7d56-497a-4be6-8569-a89adf33a180",
+      "jd_chars": 8247,
+      "jd_sha256": "32c6d73c97e5fe99b1fd053d12bbeebb42e7c54e418b41709ed4eccc6097f6d9"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/f0af920d-c80e-4b1c-ba10-a7b0077a6271",
+      "company": "Coates Group",
+      "title": "Benefits Administrator",
+      "location": "Chicago, IL",
+      "source_job_id": "f0af920d-c80e-4b1c-ba10-a7b0077a6271",
+      "jd_chars": 9894,
+      "jd_sha256": "ced2ed22f53f2282313ef2592b6a7a05affb141f6aec869f4371090bec7f499e"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/d59c6b09-4f56-457f-8646-60769465ace4",
+      "company": "Coates Group",
+      "title": "VP, Product Engineering",
+      "location": "Chicago, IL",
+      "source_job_id": "d59c6b09-4f56-457f-8646-60769465ace4",
+      "jd_chars": 8043,
+      "jd_sha256": "807062f060bc5723cf5362ec71f46c7b15b4553d0b583134847fbd00e15f2f8b"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/ca060dec-a86e-440f-be9d-a1da1f98cf37",
+      "company": "Coates Group",
+      "title": "Data Engineering Lead",
+      "location": "Chicago, IL",
+      "source_job_id": "ca060dec-a86e-440f-be9d-a1da1f98cf37",
+      "jd_chars": 8603,
+      "jd_sha256": "1365c8167ea7932ff1e3de3dbbb960274a3e22e2e4b38765fcdc5bfc6ba6516d"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/b3289675-84a2-4b92-ab1c-9b272d9ccf1b",
+      "company": "Coates Group",
+      "title": "Director, Engineering",
+      "location": "Chicago, IL",
+      "source_job_id": "b3289675-84a2-4b92-ab1c-9b272d9ccf1b",
+      "jd_chars": 9002,
+      "jd_sha256": "e2586d928b89de59f61881d6eb07168443f806556880657fb784bb4eca3a2fd0"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/6d201f4e-6008-405d-ac30-ab732c98e466",
+      "company": "Coates Group",
+      "title": "Sales Operations - Estimator",
+      "location": "Sydney",
+      "source_job_id": "6d201f4e-6008-405d-ac30-ab732c98e466",
+      "jd_chars": 8846,
+      "jd_sha256": "6731e36d6a2e1724bf66b4de099eda7aa3eade157115fcfd0be5c195b45babf2"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/614e13b5-0c0d-47f1-b881-2d7d5ca50657",
+      "company": "Coates Group",
+      "title": "Service & Hardware Support Specialist",
+      "location": "Navi Mumbai",
+      "source_job_id": "614e13b5-0c0d-47f1-b881-2d7d5ca50657",
+      "jd_chars": 8790,
+      "jd_sha256": "513ce96b375836ddd14da8173e5c8265522a0297e034516570baaca23ff491f0"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/5faa5ab5-ace9-4fe8-a64f-7253989e687e",
+      "company": "Coates Group",
+      "title": "Business Development Manager",
+      "location": "Sydney",
+      "source_job_id": "5faa5ab5-ace9-4fe8-a64f-7253989e687e",
+      "jd_chars": 8267,
+      "jd_sha256": "975cc158c61e62079bc4959ef5fad3f431eb31da4956ba807f4f86fe2b87f7eb"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/4b21274d-f89a-46e7-af39-094e8a6df403",
+      "company": "Coates Group",
+      "title": "Director, Global Manufacturing & Quality Transformation",
+      "location": "Sydney",
+      "source_job_id": "4b21274d-f89a-46e7-af39-094e8a6df403",
+      "jd_chars": 9326,
+      "jd_sha256": "2ca2edc60a59c19c5de66994803dd0f2ac912003dcfb84a95529ad785eba490b"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/1704d1c2-8b32-4b63-af6b-2536e222dd03",
+      "company": "Coates Group",
+      "title": "Office Manager",
+      "location": "Paris",
+      "source_job_id": "1704d1c2-8b32-4b63-af6b-2536e222dd03",
+      "jd_chars": 7774,
+      "jd_sha256": "5ab1b669bffe57a09eeb6c3c02956031db4e76c7647a3c147ca1b9927bce7f54"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/092d21e5-02fa-415b-bb46-eb44df0b4ce0",
+      "company": "Coates Group",
+      "title": "VP, Finance",
+      "location": "Chicago, IL",
+      "source_job_id": "092d21e5-02fa-415b-bb46-eb44df0b4ce0",
+      "jd_chars": 7424,
+      "jd_sha256": "d38ae7a4cacaf47e70368b5938a1cb06fd7d0faf0a0f017e23dc478c4e0891e3"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/0741e855-56bc-4941-b7f3-74b4dc32eb0c",
+      "company": "Coates Group",
+      "title": "Senior People & Culture Business Partner",
+      "location": "Sydney",
+      "source_job_id": "0741e855-56bc-4941-b7f3-74b4dc32eb0c",
+      "jd_chars": 9278,
+      "jd_sha256": "58d40ba9b7702cf337bf023039331b3cf487a25c8f6a00b10c559907cc8724c5"
+    },
+    {
+      "url": "https://jobs.lever.co/pattern/fa61a3ae-1cf8-406c-852b-f3d8eabe6731",
+      "company": "Pattern",
+      "title": "VP of Investor Relations",
+      "location": "Lehi, UT, US",
+      "source_job_id": "fa61a3ae-1cf8-406c-852b-f3d8eabe6731",
+      "jd_chars": 9947,
+      "jd_sha256": "147f999f2a4067ab3a7edd6116b15ce4e44ea4c3f4fdfe9ed323a58ea1177e9c"
+    },
+    {
+      "url": "https://jobs.lever.co/pattern/9fab7245-fb4e-48f4-84fd-c55910eebbdc",
+      "company": "Pattern",
+      "title": "Sr. Financial Analyst",
+      "location": "Lehi, UT, US",
+      "source_job_id": "9fab7245-fb4e-48f4-84fd-c55910eebbdc",
+      "jd_chars": 8663,
+      "jd_sha256": "1a0865f471114d9b70305b9f8a4bc0d6d5875c2fb47e5c3d44d8973ad9084142"
+    },
+    {
+      "url": "https://jobs.lever.co/pattern/90097cfe-4a53-46fa-9d33-46844161c07c",
+      "company": "Pattern",
+      "title": "Finance Internship",
+      "location": "Lehi, UT, US",
+      "source_job_id": "90097cfe-4a53-46fa-9d33-46844161c07c",
+      "jd_chars": 10309,
+      "jd_sha256": "132e06c4a11cf73419552df652d93245e0a56dfad3da7c426e4f50f12c9f730d"
+    },
+    {
+      "url": "https://jobs.lever.co/pattern/882bbfd8-a3ec-40bc-9f03-6e9e634f246d",
+      "company": "Pattern",
+      "title": "Payroll Analyst",
+      "location": "Pune, India",
+      "source_job_id": "882bbfd8-a3ec-40bc-9f03-6e9e634f246d",
+      "jd_chars": 2120,
+      "jd_sha256": "d774f4da389225cdfd7ce830464b2906b7c711da3c3864f22859f9ffcec9cd97"
+    },
+    {
+      "url": "https://jobs.lever.co/pattern/13695e3e-92b7-40f7-8805-ea39b9c324e7",
+      "company": "Pattern",
+      "title": "Operations Internship",
+      "location": "Lehi, UT, US",
+      "source_job_id": "13695e3e-92b7-40f7-8805-ea39b9c324e7",
+      "jd_chars": 10769,
+      "jd_sha256": "f58796b586e64b0b086612ff7ad9ec700ebf7fd1900fce12a7eb306c97177257"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/93811788-1087-4100-964f-416dadf472e1",
+      "company": "Ninja Van",
+      "title": "Intern, Finance",
+      "location": "Subang Jaya, Selangor, Malaysia",
+      "source_job_id": "93811788-1087-4100-964f-416dadf472e1",
+      "jd_chars": 4163,
+      "jd_sha256": "03b45869f0acbad66c0b0719932f62fc054dad7b09fa949030644edd9100161b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/1adeeae4-321c-4be6-996f-715bb1988b7c",
+      "company": "Ninja Van",
+      "title": "Sales Operations Analyst",
+      "location": "Singapore, Singapore",
+      "source_job_id": "1adeeae4-321c-4be6-996f-715bb1988b7c",
+      "jd_chars": 2740,
+      "jd_sha256": "b795ec9b8f045342f7e6520640f257a82c34c5b5366c33a5010f860190a57042"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/44c95f9f-7d6c-4571-a1ac-45ce64ce24cf",
+      "company": "Coates Group",
+      "title": "Senior Business Applications Specialist",
+      "location": "Mangalore",
+      "source_job_id": "44c95f9f-7d6c-4571-a1ac-45ce64ce24cf",
+      "jd_chars": 7784,
+      "jd_sha256": "6ee2d43c69eb4ec7a5435e64d72630a941531a8b21a7b7e1855b948415976bb1"
+    },
+    {
+      "url": "https://jobs.lever.co/pattern/03f7f302-c31f-460b-a09d-ed0847524b20",
+      "company": "Pattern",
+      "title": "Talent Acquisition Partner, China",
+      "location": "Guangzhou, China",
+      "source_job_id": "03f7f302-c31f-460b-a09d-ed0847524b20",
+      "jd_chars": 4862,
+      "jd_sha256": "cad6ea885a89173ce2059be1718716ac2ca7271fa46da4838c156b43f5da7cff"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/f7e2e339-d9c5-43d7-b5b9-0997513f5164",
+      "company": "Ninja Van",
+      "title": "法务经理（Legal Manager）",
+      "location": "Guangzhou, China",
+      "source_job_id": "f7e2e339-d9c5-43d7-b5b9-0997513f5164",
+      "jd_chars": 440,
+      "jd_sha256": "91a86956ec85e17854f51a2587adc47c380107a123f8253a47bdaf8a26e1fc68"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/b5585d88-1215-473d-9163-edb5910deda2",
+      "company": "Ninja Van",
+      "title": "Senior Associate, Finance 财务高级专员（总账与税务方向）",
+      "location": "Guangzhou, China",
+      "source_job_id": "b5585d88-1215-473d-9163-edb5910deda2",
+      "jd_chars": 753,
+      "jd_sha256": "fd6d967bcc16893446c53ddaf4db560bbadf3744f3e9c4994f03a0bcb742b713"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/79a2876e-5bee-48e3-8724-2be5aa798527",
+      "company": "Ninja Van",
+      "title": "Legal Operations Associate 法务文员",
+      "location": "Guangzhou, China",
+      "source_job_id": "79a2876e-5bee-48e3-8724-2be5aa798527",
+      "jd_chars": 452,
+      "jd_sha256": "ed04159b6c4ee41d1004b0ff29edc6586a231c4c7a5ad8097f0fb901a9388cf0"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/68e46f73-47a1-49d7-a8d0-44bf0bcf76c6",
+      "company": "Ninja Van",
+      "title": "Associate, Cross Border Operations (First Mile) 跨境物流专员（国内运输）",
+      "location": "Guangzhou, China",
+      "source_job_id": "68e46f73-47a1-49d7-a8d0-44bf0bcf76c6",
+      "jd_chars": 334,
+      "jd_sha256": "c631e427c4700a743cc02af267207673c42852d614f5c47560e54fdc733fa1f6"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/5315661b-ac3f-42a5-9a6a-d2b4d531afe2",
+      "company": "Ninja Van",
+      "title": "Cross Border Linehaul Manager, Air Freight-跨境物流经理（空运）",
+      "location": "Guangzhou, China",
+      "source_job_id": "5315661b-ac3f-42a5-9a6a-d2b4d531afe2",
+      "jd_chars": 720,
+      "jd_sha256": "a9424fdea3d13de39edf7eebeed09bdaab628d756d3b8e4aba0468b6eaab97ce"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/47a37342-a951-4001-8fb5-4e1786517000",
+      "company": "Ninja Van",
+      "title": "Senior Operations Associate, Air Freight, Cross Border  (China) 跨境物流高级专员（空运）",
+      "location": "Guangzhou, China",
+      "source_job_id": "47a37342-a951-4001-8fb5-4e1786517000",
+      "jd_chars": 549,
+      "jd_sha256": "cfe532ad63c8c8c84409bfc388b493e3318088f0768ad4a3b363778fb9c0812b"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/452842a5-8f2a-4203-a09f-661dcd4a487d",
+      "company": "Ninja Van",
+      "title": "Senior Associate, Cross Border (Sea & Land Freight)跨境物流高级专员（海陆运）",
+      "location": "Guangzhou, China",
+      "source_job_id": "452842a5-8f2a-4203-a09f-661dcd4a487d",
+      "jd_chars": 101,
+      "jd_sha256": "4d61dd22fb93f5cdc68c646bbeb3568117cc05040df8fe9d2feaf5a1ed4659e7"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/343778c6-c910-47bc-aeb2-ce2ae20bd271",
+      "company": "Ninja Van",
+      "title": "Senior Associate, Cross Border (Air) - 跨境物流高级专员（空运）",
+      "location": "Guangzhou, China",
+      "source_job_id": "343778c6-c910-47bc-aeb2-ce2ae20bd271",
+      "jd_chars": 549,
+      "jd_sha256": "cfe532ad63c8c8c84409bfc388b493e3318088f0768ad4a3b363778fb9c0812b"
+    },
+    {
+      "url": "https://jobs.lever.co/coatesgroup/c73e550f-ec3e-4811-9ed5-3ad355a5899d",
+      "company": "Coates Group",
+      "title": "Operations Engineer",
+      "location": "Guangzhou",
+      "source_job_id": "c73e550f-ec3e-4811-9ed5-3ad355a5899d",
+      "jd_chars": 2010,
+      "jd_sha256": "6d1e6fbe98b299e71b23f7d06405f49ad3df418a2a705ad9cce0708addc651c9"
+    },
+    {
+      "url": "https://jobs.lever.co/ninjavan/cc9cdc8a-9175-427a-a1a6-9c46766945c4",
+      "company": "Ninja Van",
+      "title": "Associate, Customer Success （Linehaul） 客户运营管理专员（干线服务）",
+      "location": "Guangzhou, China",
+      "source_job_id": "cc9cdc8a-9175-427a-a1a6-9c46766945c4",
+      "jd_chars": 562,
+      "jd_sha256": "8e5a9bedd0ed60656477df2a1462727a18b5a5760f10f62fc5d4df67f9df3ef8"
+    }
+  ],
+  "verification": {
+    "read_back_count": 100,
+    "all_jd_hashes_match": true,
+    "synthetic_data": false,
+    "scope": "不限地区、岗位类型的容量验收；不是100条广州目标岗位"
+  }
+}

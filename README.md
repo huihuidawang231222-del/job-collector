@@ -63,3 +63,7 @@ Windows 安装后运行 `.venv\Scripts\python -m unittest discover -v`，检查�
 ## 公司官网岗位（新增）
 
 管理界面新增“公司官网岗位搜索”：输入关键词、城市，选择公司目录或补充官网入口。支持Playwright动态页及公开静态HTML、JSON-LD/Microdata JD提取、招聘系统租户发现、已有JD跳过及带来源的分类导出。详见 [官网采集说明及云端验证](docs/OFFICIAL_CAREERS.md)。搜索引擎发现仍为实验功能，不保证任意关键词发现全部公司。
+
+## 单次100条验收
+
+新增“官网公开岗位批量采集与验收”，接入Lever官方公开岗位列表接口，目标可设1—1000条。按当前任务实际保存后从数据库读回的唯一岗位计数，旧数据和重复岗位不凑数；JD、URL及来源发布ID必须齐全。详见`docs/OFFICIAL_CAREERS.md`与`docs/BATCH_ACCEPTANCE_100.json`。本次实测不限地区100条，广州11条，广州相关关键词1条；不是100条广州目标岗位。
