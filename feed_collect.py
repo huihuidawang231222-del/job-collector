@@ -9,6 +9,22 @@ from public_feeds import lever_config,read_lever_page,normalize_lever,documented
 from collection_safety import CollectionGuard,SafetyStop,single_collector,write_json
 DATA=ROOT/'data';STATUS=DATA/'feed-task.json';STOP=DATA/'feed-stop'
 
+def completion_message(state,reports,stats,target):
+    total=sum(r.get('examined',0) for r in reports)
+    if state=='stopped':return '用户请求停止，任务已退出；本次未保存尚未提交的候选岗位。'
+    if state=='passed':return f"采集完成：已保存并读回{stats['saved_unique']}条不同岗位，达到目标{target}条。"
+    reasons=[]
+    labels={'invalid':'信息不完整或非有效岗位','city_mismatch':'地区不匹配','keyword_mismatch':'关键词不匹配','existing':'已有完整JD，默认跳过','duplicate':'重复岗位'}
+    for key,label in labels.items():
+        count=sum(r.get('excluded',{}).get(key,0) for r in reports)
+        if count:reasons.append(f'{label}{count}条')
+    failures=sum(r.get('state') in ('failed','protected') for r in reports)
+    if failures:reasons.append(f'{failures}个来源失败或被保护规则拦截，详见各来源原因')
+    limited=sum(r.get('end_reason')=='达到每来源分页上限' for r in reports)
+    if limited:reasons.append(f'{limited}个来源达到分页上限')
+    detail='；'.join(reasons) or '所选来源已处理结束，没有足够符合条件的新岗位'
+    return f"结束原因：已检查{total}条来源岗位，本次保存{stats['saved_unique']}条，目标{target}条。{detail}。"
+
 def metrics(rows):
     city=[r for r in rows if matches(r,'','广州')]
     return {'saved_unique':len(rows),'complete_jd':sum(len(r.get('jd',''))>=80 for r in rows),
@@ -31,31 +47,36 @@ def run(args):
         if STOP.exists():break
         config=lever_config(source['url']);host=config['api']
         guard=guards.setdefault(host,CollectionGuard(host,DATA,policy=documented_lever_policy))
-        seen_ids=set();examined=0;eligible=0;requests=0
+        seen_ids=set();examined=0;eligible=0;requests=0;excluded=Counter();end_reason='达到每来源分页上限'
         try:
             for index in range(args.pages):
                 if STOP.exists():break
+                write_json(STATUS,{'state':'running','task_id':task_id,'target':args.target,'company':source.get('company'),'pages':index,'eligible_unique':len(candidates),'sources':reports,'message':f'读取第{index+1}页；限速等待或网络请求期间进程仍在运行'})
                 posts,api_url,size=read_lever_page(config,index*200,200,guard)
                 network_requests+=1;requests+=1;new_ids=0
                 for post in posts:
                     ident=str(post.get('id',''))
-                    if ident in seen_ids:continue
+                    if ident in seen_ids:excluded['duplicate']+=1;continue
                     seen_ids.add(ident);new_ids+=1;examined+=1
                     row=normalize_lever(post,source)
-                    if not row or not matches(row,args.keyword,args.city):continue
+                    if not row:excluded['invalid']+=1;continue
+                    if not matches(row,'',args.city):excluded['city_mismatch']+=1;continue
+                    if not matches(row,args.keyword,''):excluded['keyword_mismatch']+=1;continue
                     key=job_id(row)
-                    if key in existing and existing[key].get('jd') and not args.refresh:continue
+                    if key in existing and existing[key].get('jd') and not args.refresh:excluded['existing']+=1;continue
+                    if key in candidates:excluded['duplicate']+=1;continue
                     row.update(batch_task_id=task_id,search_keyword=args.keyword)
                     candidates.setdefault(key,row);eligible+=1
-                if len(posts)<200 or not new_ids:break
-                if len(candidates)>=args.target:break
-            reports.append(dict(company=source.get('company'),examined=examined,eligible=eligible,requests=requests,state='completed'))
+                if len(posts)<200 or not new_ids:end_reason='已读完来源公开列表';break
+                if len(candidates)>=args.target:end_reason='已达到候选岗位目标';break
+            reports.append(dict(company=source.get('company'),examined=examined,eligible=eligible,requests=requests,state='completed',excluded=dict(excluded),end_reason=end_reason))
         except Exception as e:
-            reports.append(dict(company=source.get('company'),examined=examined,eligible=eligible,requests=requests,state='protected' if isinstance(e,SafetyStop) else 'failed',message=str(e)))
+            reports.append(dict(company=source.get('company'),examined=examined,eligible=eligible,requests=requests,state='protected' if isinstance(e,SafetyStop) else 'failed',message=str(e),excluded=dict(excluded),end_reason=str(e)))
         write_json(STATUS,{'state':'running','task_id':task_id,'target':args.target,'eligible_unique':len(candidates),'sources':reports})
     # Prioritize explicitly Guangzhou locations for a broad capacity test; never relabel other cities.
     selected=sorted(candidates.values(),key=lambda r:(not matches(r,'','广州'),not matches(r,'数据分析,GIS,运营分析,analyst',''),r['company'],r['source_job_id']))[:args.target]
     if STOP.exists():selected=[]
+    write_json(STATUS,{'state':'running','task_id':task_id,'target':args.target,'eligible_unique':len(selected),'sources':reports,'message':'正在保存岗位并从数据库读回验收'})
     added,updated,skipped=save(selected) if selected else (0,0,0)
     # Only current-task records count; old DB rows and attempted writes do not count toward acceptance.
     stored=[r for r in load() if r.get('batch_task_id')==task_id]
@@ -66,6 +87,7 @@ def run(args):
        'writes':{'added':added,'updated':updated,'skipped':skipped},'network_requests':network_requests,'elapsed_seconds':round(time.monotonic()-started,2),
        'sources':reports,'finished_at':datetime.now(timezone.utc).isoformat(timespec='seconds'),
        'manifest':[{'url':r['url'],'company':r['company'],'title':r['title'],'location':r['location'],'source_job_id':r['source_job_id'],'jd_chars':len(r['jd']),'jd_sha256':hashlib.sha256(r['jd'].encode()).hexdigest()} for r in stored]}
+    report['message']=completion_message(report['state'],reports,stats,args.target)
     directory=DATA/'runs'/task_id;directory.mkdir(parents=True,exist_ok=True)
     write_json(directory/'acceptance.json',report);write_json(STATUS,report)
     (directory/'jobs.json').write_text(json.dumps(stored,ensure_ascii=False,indent=2),encoding='utf-8')

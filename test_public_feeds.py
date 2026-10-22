@@ -4,13 +4,33 @@ from pathlib import Path
 from unittest.mock import patch
 import core
 import feed_collect as task
-from public_feeds import lever_config,normalize_lever,documented_lever_policy
-from collection_safety import SafetyStop
+from public_feeds import lever_config,normalize_lever,documented_lever_policy,read_lever_page
+from collection_safety import SafetyStop,CollectionGuard
+from urllib.error import HTTPError,URLError
+from unittest.mock import Mock
 SOURCE={'company':'测试雇主','url':'https://jobs.lever.co/example'}
 def posting(i,city='Guangzhou'):
  return dict(id=str(i),text='Analyst '+str(i),categories={'location':city},descriptionPlain='SQL Python analysis. '*10,
  lists=[{'text':'Requirements','content':'<li>本科</li><li>分析经验</li>'}],additionalPlain='Additional information',hostedUrl='https://jobs.lever.co/example/'+str(i))
 class FeedTests(unittest.TestCase):
+ def test_failed_host_cools_down_across_employers_and_restart(self):
+  failures=[HTTPError('https://api.lever.co',500,'error',{},None),
+            HTTPError('https://api.lever.co',503,'error',{'Retry-After':'900'},None),
+            URLError('connection failed'),TimeoutError(),ConnectionResetError()]
+  for failure in failures:
+   with self.subTest(failure=type(failure).__name__),tempfile.TemporaryDirectory() as directory:
+    now=100000
+    guard=CollectionGuard('api.lever.co',directory,clock=lambda:now,policy=documented_lever_policy)
+    opener=Mock();opener.open.side_effect=failure
+    with self.assertRaises(SafetyStop):read_lever_page(lever_config(SOURCE['url']),0,1,guard,opener)
+    delay=900 if isinstance(failure,HTTPError) and failure.code==503 else 300
+    self.assertEqual(guard.state['cooldown_until'],now+delay)
+    restarted=CollectionGuard('api.lever.co',directory,clock=lambda:now,policy=documented_lever_policy)
+    with self.assertRaises(SafetyStop):read_lever_page(lever_config('https://jobs.lever.co/another'),0,1,restarted,opener)
+    self.assertEqual(opener.open.call_count,1)
+    CollectionGuard('api.eu.lever.co',directory,clock=lambda:now).checkpoint()
+    CollectionGuard('api.lever.co',directory,clock=lambda:now+delay).checkpoint()
+
  def test_url_config_and_job_url_must_match_tenant(self):
   self.assertEqual(lever_config(SOURCE['url'])['api'],'api.lever.co')
   for url in ['http://jobs.lever.co/example','https://evil.test/example','https://jobs.lever.co/example/apply','https://jobs.lever.co/example?q=x']:
@@ -44,6 +64,9 @@ class FeedTests(unittest.TestCase):
  def test_city_shortfall_not_filled_with_other_cities(self):
   result=self.run_task([posting(i,'Shanghai') for i in range(100)],city='广州')
   self.assertFalse(result['acceptance_passed']);self.assertEqual(result['metrics']['saved_unique'],0)
+  self.assertEqual(result['sources'][0]['excluded']['city_mismatch'],100)
+  self.assertIn('地区不匹配100条',result['message'])
+  self.assertEqual(result['sources'][0]['end_reason'],'已读完来源公开列表')
  def test_gis_not_logistics(self):
   from official_careers import matches
   self.assertFalse(matches({'title':'Logistics Analyst','jd':'logistics','location':'Guangzhou'},'GIS','广州'))

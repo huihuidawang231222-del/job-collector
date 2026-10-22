@@ -2,6 +2,25 @@ import tempfile,unittest
 from pathlib import Path
 import core
 class CoreTests(unittest.TestCase):
+    def test_reset_backs_up_jobs_preserves_other_tables_and_respects_lock(self):
+        from unittest.mock import patch
+        from collection_safety import SafetyStop
+        with tempfile.TemporaryDirectory() as d,patch.object(core,'DB',Path(d)/'jobs.sqlite3'):
+            core.save([{'title':'Test','jd':'Original JD','url':'https://example.com/1'}])
+            with core.connect() as c:
+                c.execute('CREATE TABLE history (value TEXT)');c.execute("INSERT INTO history VALUES ('keep')")
+            lock=Path(d)/'worker.lock';lock.write_text('123')
+            with self.assertRaises(SafetyStop):core.reset_jobs()
+            self.assertEqual(len(core.load()),1);lock.unlink()
+            with patch('core.json.dump',side_effect=OSError('backup failed')):
+                with self.assertRaises(OSError):core.reset_jobs()
+            self.assertEqual(len(core.load()),1)
+            count,backup=core.reset_jobs()
+            self.assertEqual(count,1);self.assertEqual(core.load(),[])
+            import json
+            rows=json.loads(backup.read_text(encoding='utf-8'));self.assertEqual(rows[0]['jd'],'Original JD')
+            with core.connect() as c:self.assertEqual(c.execute('SELECT value FROM history').fetchone()[0],'keep')
+            core.save(rows);self.assertEqual(len(core.load()),1)
     def test_salary(self):
         self.assertEqual(core.salary('8千-1.2万·13薪'),(8000,12000))
         self.assertEqual(core.salary('8-12K'),(8000,12000))

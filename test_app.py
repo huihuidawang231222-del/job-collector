@@ -15,9 +15,11 @@ class AppTests(unittest.TestCase):
                 core.DB = Path(directory) / 'jobs.sqlite3'
                 app = AppTest.from_file(str(Path(__file__).with_name('app.py'))).run(timeout=30)
                 self.assertEqual(len(app.exception), 0)
+                self.assertEqual(len(app.tabs),7)
+                self.assertTrue(next(x for x in app.button if x.label=='确认清空并重置').disabled)
                 self.assertTrue(any(x.label == '选择 PDF 简历' for x in app.get('file_uploader')))
                 self.assertTrue(next(x for x in app.button if x.label == '解析简历').disabled)
-                self.assertTrue(next(x for x in app.checkbox if x.label == '使用上方核对后的简历做匹配分析').disabled)
+                self.assertTrue(next(x for x in app.checkbox if x.label == '使用已核对的简历做匹配分析').disabled)
                 self.assertTrue(any(x.label == 'API Key（仅在本次本地会话使用，不写入文件）' for x in app.text_input))
                 self.assertTrue(next(x for x in app.button if x.label == '分析此岗位').disabled)
                 core.save([dict(title='合成测试分析师', company='测试公司', location='广州',
@@ -36,6 +38,12 @@ class AppTests(unittest.TestCase):
                 self.assertEqual(len(app.exception), 0)
                 self.assertTrue(any('筛选结果：0 条' in x.value for x in app.markdown))
                 self.assertTrue(next(x for x in app.button if x.label == '分析此岗位').disabled)
+                next(x for x in app.checkbox if x.label=='我确认清空当前临时岗位表全部记录').check().run(timeout=30)
+                next(x for x in app.button if x.label=='确认清空并重置').click().run(timeout=30)
+                self.assertEqual(len(app.exception),0)
+                self.assertEqual(core.load(),[])
+                self.assertTrue(any('已清空 1 条岗位' in x.value for x in app.success))
+                self.assertTrue(list((Path(directory)/'backups').glob('*.json')))
         finally:
             core.DB = previous
 

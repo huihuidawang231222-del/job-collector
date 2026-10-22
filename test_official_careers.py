@@ -4,6 +4,18 @@ from unittest.mock import patch
 from official_careers import canonical,public_url,linked_scope,tenant,matches,listing_state,official_policy
 from collection_safety import SafetyStop
 class OfficialTests(unittest.TestCase):
+ def test_fake_dns_requires_proxy_and_keeps_private_destinations_blocked(self):
+  def records(*addresses):return [(2,1,6,'',(a,443)) for a in addresses]
+  with patch('official_careers.getproxies',return_value={'https':'http://127.0.0.1:7897'}):
+   with patch('official_careers.socket.getaddrinfo',return_value=records('198.18.0.42')):
+    self.assertTrue(public_url('https://jobs.lever.co/example',resolve=True))
+    self.assertFalse(public_url('https://198.18.0.42/',resolve=True))
+   for addresses in [('127.0.0.1',),('10.0.0.1',),('198.18.0.42','192.168.1.1')]:
+    with patch('official_careers.socket.getaddrinfo',return_value=records(*addresses)):
+     self.assertFalse(public_url('https://example.com/',resolve=True))
+  with patch('official_careers.getproxies',return_value={}),patch('official_careers.socket.getaddrinfo',return_value=records('198.18.0.42')):
+   self.assertFalse(public_url('https://example.com/',resolve=True))
+
  def test_url_and_tenant_boundaries(self):
   self.assertFalse(public_url('http://127.0.0.1/x'))
   self.assertFalse(public_url('https://localhost/'))

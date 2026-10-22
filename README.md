@@ -1,4 +1,47 @@
-# 岗位收集箱 · 本地独立版 v0.3
+# Job Collector · 岗位收集箱
+
+本地运行的岗位收集与求职资料整理工具：把公开岗位、完整 JD、简历文字和可选 AI 分析放在一个工作台。
+
+A local job research workspace for public job postings, full job descriptions, PDF resume text, and optional AI analysis.
+
+## 最新功能 / Features
+
+- **7 个选项卡**：公开接口采集、企业官网采集、招聘平台采集、岗位表与导出、简历解析、AI 岗位分析、导入与补录。
+- **看得见的任务状态**：每 2 秒刷新进度和心跳，显示完成、未达目标、异常及具体排除原因。
+- **可重置的岗位表**：清空前确认并自动备份，保留分析历史和采集证据。
+- **本地资料管理**：SQLite、CSV/JSON 往返导入导出、PDF 文字提取；第三方 AI 为可选功能，发送前确认。
+- Seven focused tabs; live task progress, heartbeat and explicit stop reasons.
+- Backup before clearing the working jobs table; collection evidence and analysis history remain separate.
+- Local SQLite storage, CSV/JSON import/export, text-based PDF resume parsing, and optional third-party AI analysis with explicit consent.
+
+## 实测范围 / Verified scope
+
+2026-10-23 Windows 本机：**50 项测试通过**；单任务通过 Lever 公开 API 获取、保存并读回 **100 条不同岗位**，4 次请求、约 34 秒。不限地区与岗位类型，不代表 100 条广州目标岗位。Chromium 网页路径另行验证 2 页、保存 1 条岗位。
+
+Windows validation on 2026-10-23: **50 passing tests**. One live task saved and read back **100 distinct jobs** through the public Lever API in about 34 seconds using 4 requests. This was an unfiltered capacity check, not 100 jobs in a target city or role. A separate Chromium check visited 2 pages and saved 1 job.
+
+[详细验收 / Validation details](docs/LOCAL_ACCEPTANCE_20261023.md) · [中英文推广文案 / Launch posts](docs/LAUNCH_POSTS.md)
+
+## 快速开始 / Quick start
+
+需要 Python 3.10+。Windows 双击 `安装.bat`，然后双击 `启动管理界面.bat`。首次尝试建议使用公开接口采集；默认广州筛选可能得到较少结果。
+
+Requires Python 3.10+. On Windows, run `安装.bat`, then `启动管理界面.bat`. Or use a terminal:
+
+```bash
+python -m venv .venv
+# Activate .venv first, then:
+pip install -r requirements.txt
+python -m playwright install chromium
+streamlit run app.py --server.address 127.0.0.1 --browser.gatherUsageStats false
+```
+
+只访问允许的公开来源，遇到 robots 限制、登录或验证时停止；不保证支持所有招聘平台。扫描版 PDF 暂不支持 OCR。AI 调用需要自己的服务配置和密钥，厂商可能收费。`data/`、简历与凭据不随源码发布。
+
+Use permitted public sources. Collection stops for access restrictions or verification; universal job-board support is not promised. Scanned PDFs need OCR, which is not included. AI is optional and requires your own provider settings and key; provider charges may apply. Local data and credentials are excluded from this repository.
+
+---
+
 
 这是可运行的源码初版，需要安装 Python 3.10+。不是免安装 EXE，也不是已验证覆盖全部招聘平台的成品。
 

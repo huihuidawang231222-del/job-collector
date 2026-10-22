@@ -4,3 +4,11 @@ __pycache__/
 data/
 *.zip
 .pytest_cache/
+
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.sqlite
+*.db
+*.pdf

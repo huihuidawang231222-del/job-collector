@@ -20,6 +20,13 @@ def canonical(url):
     query=urlencode([(k,v) for k,v in parse_qsl(p.query,keep_blank_values=True) if k not in TRACKING and not k.startswith('utm_')])
     return urlunsplit((p.scheme.lower(),p.netloc.lower(),p.path or '/',query,''))
 
+def configured_proxy(scheme='https'):
+    value=getproxies().get(scheme,'')
+    try:
+        p=urlsplit(value)
+        return value if p.scheme in ('http','https') and p.hostname and not p.username and not p.password else ''
+    except ValueError:return ''
+
 def public_url(url,resolve=False):
     p=urlsplit(url)
     if p.scheme not in ('https','http') or not p.hostname or p.username or p.password or p.port not in (None,80,443):return False
@@ -29,11 +36,18 @@ def public_url(url,resolve=False):
         return addr.is_global
     except ValueError:pass
     if resolve:
-        try:return all(ipaddress.ip_address(x[4][0]).is_global for x in socket.getaddrinfo(p.hostname,None))
+        try:
+            addresses={ipaddress.ip_address(x[4][0]) for x in socket.getaddrinfo(p.hostname,None)}
+            if not addresses:return False
+            if all(a.is_global for a in addresses):return True
+            # Clash Fake-IP is accepted only through an explicitly configured proxy.
+            # Literal IPs were checked above; mixed/private DNS results stay blocked.
+            fake=ipaddress.ip_network('198.18.0.0/15')
+            return bool(configured_proxy(p.scheme)) and all(a.version==4 and a in fake for a in addresses)
         except OSError:
             # Managed HTTPS proxies resolve public hostnames remotely; literal/private
             # addresses and local hostnames were already rejected above.
-            return bool(getproxies().get(p.scheme))
+            return bool(configured_proxy(p.scheme))
     return True
 
 class PublicRedirect(HTTPRedirectHandler):
@@ -131,9 +145,12 @@ def run(args):
     sources=json.loads(Path(args.sources).read_text(encoding='utf-8'))
     if not isinstance(sources,list) or not sources or len(sources)>30:raise ValueError('来源须为1—30项数组')
     script=(ROOT/'official_extract.js').read_text(encoding='utf-8');reports=[];captured=[];candidates=[]
+    write_status(state='running',message='正在启动浏览器并检查来源',reports=[])
     existing={canonical(r['url']):r for r in __import__('core').load() if r.get('url')}
     with sync_playwright() as p:
         _,opts,_=browser_config(p.chromium)
+        proxy=configured_proxy()
+        if proxy:opts={**opts,'proxy':{'server':proxy}}
         browser=p.chromium.launch(headless=args.headless,**opts)
         context=browser.new_context(user_agent='JobCollector/0.4 (+public career page collection)',java_script_enabled=args.transport!='html')
         # Block private destinations and any download/post/application action, including redirects.
@@ -161,6 +178,7 @@ def run(args):
                         current,provenance,depth=queue.popleft();current=canonical(current)
                         if current in visited:continue
                         visited.add(current)
+                        write_status(state='running',company=source.get('company'),pages=len(visited)-1,matched=count,reports=reports,message='检查访问规则、等待请求间隔并读取页面：'+current)
                         old=existing.get(current)
                         if old and old.get('jd') and not args.refresh:
                             cached+=1;continue

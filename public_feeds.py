@@ -4,7 +4,7 @@ from html import unescape
 from html.parser import HTMLParser
 from urllib.parse import urlsplit,urlencode
 from urllib.request import Request,build_opener,HTTPRedirectHandler
-from urllib.error import HTTPError
+from urllib.error import HTTPError,URLError
 from types import SimpleNamespace
 from datetime import datetime,timezone
 
@@ -62,6 +62,8 @@ def read_lever_page(config,skip,limit,guard,opener=None):
     except HTTPError as e:
         guard.response(SimpleNamespace(status=e.code,headers={k.lower():v for k,v in e.headers.items()}))
         raise ValueError(f'公开接口HTTP {e.code}，未重试') from None
+    except (URLError,TimeoutError,ConnectionError):
+        guard.trip('公开接口连接失败',seconds=300)
 
 def normalize_lever(posting,source):
     config=lever_config(source['url']);ident=str(posting.get('id','')).strip()

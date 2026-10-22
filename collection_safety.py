@@ -157,8 +157,8 @@ class CollectionGuard:
     def response(self,response):
         if response is None:return
         code=response.status
-        if code not in (401,403,429):return
-        seconds=3600
+        if code not in (401,403,429) and not 500<=code<=599:return
+        seconds=300 if 500<=code<=599 else 3600
         retry=response.headers.get('retry-after','')
         if retry:
             try:seconds=max(seconds,int(retry))

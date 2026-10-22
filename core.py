@@ -59,3 +59,21 @@ def save(rows):
 def load():
     with connect() as c: return [json.loads(x[0]) for x in c.execute('SELECT payload FROM jobs ORDER BY rowid DESC')]
 
+def reset_jobs():
+    """Back up and clear only the working jobs table, under the collector lock."""
+    from collection_safety import single_collector
+    @single_collector(DB.parent)
+    def reset():
+        with connect() as c:
+            c.execute('BEGIN IMMEDIATE')
+            rows=[json.loads(x[0]) for x in c.execute('SELECT payload FROM jobs')]
+            if not rows:return 0,None
+            directory=DB.parent/'backups';directory.mkdir(exist_ok=True)
+            path=directory/('jobs-before-reset-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')+'.json')
+            # Exclusive creation and a completed backup are required before deletion.
+            with path.open('x',encoding='utf-8') as stream:
+                json.dump(rows,stream,ensure_ascii=False,indent=2)
+            c.execute('DELETE FROM jobs')
+        return len(rows),path
+    return reset()
+
