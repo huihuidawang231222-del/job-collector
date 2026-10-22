@@ -47,7 +47,9 @@ def save(rows):
             r['first_seen']=previous.get('first_seen') or r.get('first_seen') or now
             r['last_seen']=now
             r['salary_min'],r['salary_max']=salary(r.get('salary',''))
-            text=r.get('raw','')+' '+r.get('benefits','')
+            if r.get('currency') and r['currency'].upper() not in ('CNY','RMB','人民币'):
+                r['salary_min']=r['salary_max']=None
+            text=r.get('raw','')+' '+r.get('benefits','')+' '+r.get('jd','')
             r['weekends']='双休' if '双休' in text and not any(x in text for x in ['单双休','非双休','不双休','不是双休']) else '未说明'
             r=enrich(r)
             c.execute('INSERT OR REPLACE INTO jobs VALUES (?,?)',(ident,json.dumps(r,ensure_ascii=False)))
@@ -56,3 +58,4 @@ def save(rows):
     return added,updated,skipped
 def load():
     with connect() as c: return [json.loads(x[0]) for x in c.execute('SELECT payload FROM jobs ORDER BY rowid DESC')]
+

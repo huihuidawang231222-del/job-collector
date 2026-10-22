@@ -58,3 +58,8 @@ Windows 安装后运行 `.venv\Scripts\python -m unittest discover -v`，检查�
 自动采集命令示例：`python auto_collect.py --keyword 数据分析 --platforms BOSS直聘 猎聘 --limit 10 --rounds 5`。规则门禁会先判断路径；禁止或待核时只报告保护原因，不请求岗位页。不能通过提高间隔推断平台许可。
 
 采集和管理界面可同时运行，但不要同时运行两个采集浏览器进程。完整数据库与浏览器档案不会纳入Git版本控制。
+
+
+## 公司官网岗位（新增）
+
+管理界面新增“公司官网岗位搜索”：输入关键词、城市，选择公司目录或补充官网入口。支持Playwright动态页及公开静态HTML、JSON-LD/Microdata JD提取、招聘系统租户发现、已有JD跳过及带来源的分类导出。详见 [官网采集说明及云端验证](docs/OFFICIAL_CAREERS.md)。搜索引擎发现仍为实验功能，不保证任意关键词发现全部公司。

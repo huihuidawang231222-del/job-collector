@@ -12,6 +12,43 @@ st.set_page_config(page_title='岗位收集箱',page_icon='💼',layout='wide')
 st.title('💼 岗位收集箱')
 st.caption('本地独立版 · 浏览器辅助采集 · 筛选与导出')
 st.caption('四个平台规则仍待真实登录联调；自动流程已实现，成功数量以任务结果为准。')
+with st.expander('公司官网岗位搜索', expanded=True):
+    from official_careers import STATUS as OFFICIAL_STATUS, STOP as OFFICIAL_STOP
+    st.caption('从公司招聘入口及其直接链接的网申系统提取公开JD，已有完整JD默认跳过。只将明确包含岗位地点的记录计入城市匹配。')
+    catalog=json.loads(Path(__file__).with_name('official_sources.json').read_text(encoding='utf-8'))
+    with st.form('official'):
+        official_keyword=st.text_input('官网岗位关键词（逗号分隔，任一匹配）',value='数据分析,GIS,运营分析,analyst')
+        official_city=st.text_input('岗位城市（留空查看所有地点）',value='广州')
+        choices=st.multiselect('公司招聘目录',[x['company'] for x in catalog],default=[x['company'] for x in catalog if x['trust']=='公司官网招聘入口'])
+        custom_company=st.text_input('补充公司名称（可选）')
+        custom_url=st.text_input('补充官网招聘入口或岗位详情URL（可选）')
+        official_pages=st.number_input('每家公司最多读取页面',min_value=1,max_value=20,value=8)
+        discover=st.checkbox('先尝试搜索引擎发现入口（候选需核实，禁止/验证时停止搜索）')
+        refresh=st.checkbox('重新检查已有完整JD（默认跳过）')
+        transport=st.selectbox('官网读取方式',['browser','html'],format_func=lambda x:'浏览器动态页面' if x=='browser' else '公开静态HTML（不运行网站脚本）')
+        official_launch=st.form_submit_button('开始官网搜索采集')
+    if official_launch:
+        from official_careers import public_url
+        DATA.mkdir(exist_ok=True)
+        chosen=[x for x in catalog if x['company'] in choices]
+        if custom_url.strip():chosen.append({'company':custom_company.strip(),'url':custom_url.strip(),'trust':'用户提供，主体待核实'})
+        if (DATA/'worker.lock').exists():st.error('已有采集任务，请先停止')
+        elif not chosen:st.error('请选择公司或填写入口')
+        elif any(not public_url(x['url']) for x in chosen):st.error('只支持公开网站的HTTP/HTTPS地址')
+        else:
+            source_path=DATA/'official-task-sources.json';source_path.write_text(json.dumps(chosen,ensure_ascii=False),encoding='utf-8')
+            cmd=[sys.executable,str(Path(__file__).with_name('official_careers.py')),'--sources',str(source_path),'--keyword',official_keyword,'--city',official_city,'--pages',str(official_pages),'--transport',transport]
+            if refresh:cmd.append('--refresh')
+            if discover:cmd.append('--discover')
+            with (DATA/'official-worker.log').open('a',encoding='utf-8') as log:subprocess.Popen(cmd,cwd=str(Path(__file__).parent),stdout=log,stderr=log)
+            st.success('官网任务已启动。点击刷新查看结果。')
+    if st.button('停止官网任务'):
+        DATA.mkdir(exist_ok=True);OFFICIAL_STOP.touch()
+    if OFFICIAL_STATUS.exists():
+        try:
+            official_state=json.loads(OFFICIAL_STATUS.read_text(encoding='utf-8'))
+            st.json({k:v for k,v in official_state.items() if k!='jobs'})
+        except (ValueError,OSError):st.caption('状态更新中')
 with st.expander('自动搜索采集', expanded=True):
     with st.form('auto'):
         search=st.text_input('搜索关键词',value='数据分析')
@@ -76,7 +113,7 @@ if rows:
     a,b,c=st.columns(3)
     minimum=a.number_input('月薪下限至少（元，0 不限制）',min_value=0,value=0,step=1000)
     weekends=b.checkbox('仅原文明确提到双休')
-    if keyword: df=df[df[['title','company','raw']].astype(str).apply(lambda x:x.str.contains(keyword,case=False,regex=False)).any(axis=1)]
+    if keyword: df=df[df[[c for c in ['title','company','raw','jd'] if c in df]].astype(str).apply(lambda x:x.str.contains(keyword,case=False,regex=False)).any(axis=1)]
     if city: df=df[df.location.str.contains(city,regex=False)]
     if sources: df=df[df.source.isin(sources)]
     if industries: df=df[df.industry.isin(industries)]
@@ -170,3 +207,4 @@ with st.expander('AI 岗位分析（第三方 API）', expanded=True):
             st.text(record['content'])
         if history:
             st.download_button('导出该岗位最近20次分析（含原文快照）',json.dumps(history,ensure_ascii=False,indent=2).encode('utf-8'),'job-analyses.json','application/json')
+
