@@ -1,4 +1,4 @@
-# 发布文案 / Launch posts
+# Job Collector 岗位收集箱｜本地求职工作台 / Local Job Research Workspace
 
 ## 中文
 
