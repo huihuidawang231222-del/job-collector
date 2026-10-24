@@ -100,7 +100,8 @@ def check_policy(url, directory, now=None):
                         re.search(r'^\s*user-agent\s*:',text,re.I|re.M)):
                     record.update(status='checked',text=text)
         except HTTPError as error:
-            if error.code in (401,403,429):record.update(status='denied',http_status=error.code)
+            record['http_status']=error.code
+            if error.code in (401,403,429):record.update(status='denied')
         except Exception:pass
         cache[origin]=record;write_json(cache_path,cache)
     if record['status']!='checked':
@@ -179,3 +180,4 @@ class CollectionGuard:
         self.state['challenge_at']=self.clock();self.persist()
         if self.challenges>1 or (previous is not None and self.clock()-previous<3600):
             self.trip('一小时内重复出现登录或安全验证')
+

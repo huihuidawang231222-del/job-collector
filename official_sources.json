@@ -1,0 +1,33 @@
+[
+  {
+    "company": "南方数码",
+    "url": "https://www.southgis.com/talent.html",
+    "evidence_url": "https://www.southgis.com/talent.html",
+    "trust": "公司官网招聘入口",
+    "checked_on": "2026-10-22"
+  },
+  {
+    "company": "南方卫星导航",
+    "url": "https://www.southgnss.com/jobslist/type/1/cla/2.html",
+    "evidence_url": "https://www.southgnss.com/jobslist/type/1/cla/2.html",
+    "trust": "公司官网招聘入口",
+    "checked_on": "2026-10-22"
+  },
+  {
+    "company": "广州城市规划技术开发服务部",
+    "url": "https://www.uptds.cn/jobs",
+    "evidence_url": "https://www.uptds.cn/jobs",
+    "trust": "搜索发现，需核实主体",
+    "checked_on": "2026-10-22"
+  },
+  {
+    "company": "NielsenIQ",
+    "url": "https://nielseniq.com/global/en/jobs/",
+    "evidence_url": "https://nielseniq.com/global/en/careers/",
+    "trust": "公司官网招聘入口",
+    "checked_on": "2026-10-22",
+    "job_seeds": [
+      "https://jobs.smartrecruiters.com/NielsenIQ/744000148919879-research-manager-qualitative"
+    ]
+  }
+]
